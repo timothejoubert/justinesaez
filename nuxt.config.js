@@ -9,8 +9,8 @@ export default {
     // Target: https://go.nuxtjs.dev/config-target
     target: 'static',
 
-    // https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-srcdir
     // define if this file isn't same folder as nuxt front folder
+    // https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-srcdir
     srcDir: 'src',
 
     // Global page headers: https://go.nuxtjs.dev/config-head
@@ -50,7 +50,7 @@ export default {
         lang: locale,
     },
 
-    // ? The content property: https://content.nuxtjs.org/configuration
+    // The content property: https://content.nuxtjs.org/configuration
     content: {
         dir: 'content',
     },
@@ -63,11 +63,6 @@ export default {
         scss: ['@/scss/_style-resources.scss'],
         hoistUseStatements: true,
     },
-
-    // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    // plugins: [
-    //     '@/plugins/cloudinary.js',
-    // ],
 
     // Auto import components: https://go.nuxtjs.dev/config-components
     components: ['@/components', '@/components/atoms', '@/components/molecules', '@/components/organisms'],
@@ -96,6 +91,7 @@ export default {
     ],
 
     // image provider
+    // don't work with storybook ?
     // With strapi provider: https://image.nuxtjs.org/providers/strapi
     cloudinary: {
         cloudName: process.env.CLOUDINARY_NAME,
@@ -123,7 +119,7 @@ export default {
     // https://storybook.nuxtjs.org/api/options
     storybook: {
         port: 4000,
-        stories: ['~/stories/**/*.stories.js'],
+        stories: ['~/components/**/*.stories.js', '~/stories/**/*.stories.js'],
         parameters: {
             viewport: {
                 viewports: {

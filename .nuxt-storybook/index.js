@@ -13,14 +13,12 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_plugin_663eac0b from 'nuxt_plugin_plugin_663eac0b' // Source: ./components/plugin.js (mode: 'all')
-import nuxt_plugin_pluginclient_75936d5c from 'nuxt_plugin_pluginclient_75936d5c' // Source: ./cloudinary/plugin.client.js (mode: 'client')
-import nuxt_plugin_pluginserver_2aefbada from 'nuxt_plugin_pluginserver_2aefbada' // Source: ./cloudinary/plugin.server.js (mode: 'server')
-import nuxt_plugin_image_ab4d66c8 from 'nuxt_plugin_image_ab4d66c8' // Source: ./image.js (mode: 'all')
-import nuxt_plugin_cookieuniversalnuxt_76a28d49 from 'nuxt_plugin_cookieuniversalnuxt_76a28d49' // Source: ./cookie-universal-nuxt.js (mode: 'all')
-import nuxt_plugin_httpserver_4e28f064 from 'nuxt_plugin_httpserver_4e28f064' // Source: ./http.server.js (mode: 'server')
-import nuxt_plugin_http_fa7a6ae2 from 'nuxt_plugin_http_fa7a6ae2' // Source: ./http.js (mode: 'all')
-import nuxt_plugin_strapi_8732b5a4 from 'nuxt_plugin_strapi_8732b5a4' // Source: ./strapi.js (mode: 'all')
+import nuxt_plugin_plugin_5377ea6a from 'nuxt_plugin_plugin_5377ea6a' // Source: ./components/plugin.js (mode: 'all')
+import nuxt_plugin_pluginclient_4b4af213 from 'nuxt_plugin_pluginclient_4b4af213' // Source: ./cloudinary/plugin.client.js (mode: 'client')
+import nuxt_plugin_pluginserver_9df738ca from 'nuxt_plugin_pluginserver_9df738ca' // Source: ./cloudinary/plugin.server.js (mode: 'server')
+import nuxt_plugin_image_71ade17b from 'nuxt_plugin_image_71ade17b' // Source: ./image.js (mode: 'all')
+import nuxt_plugin_pluginclient_966b1e34 from 'nuxt_plugin_pluginclient_966b1e34' // Source: ./content/plugin.client.js (mode: 'client')
+import nuxt_plugin_pluginserver_1a83e26e from 'nuxt_plugin_pluginserver_1a83e26e' // Source: ./content/plugin.server.js (mode: 'server')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -85,7 +83,7 @@ async function createApp(ssrContext, config = {}) {
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    head: {"title":"Timothé Joubert","htmlAttrs":{"lang":"fr"},"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":""},{"name":"format-detection","content":"telephone=no"},{"name":"google-site-verification","content":"o5sD6l8eVydQy3O8y0D3ETIcgafZZZwbNwKjh_1qimc"}],"link":[{"rel":"apple-touch-icon","sizes":"180x180","href":"\u002Ffavicon\u002Fapple-touch-icon.png"},{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"},{"rel":"icon","type":"image\u002Fpng","sizes":"32x32","href":"\u002Ffavicon\u002Ffavicon-32x32.png"},{"rel":"icon","type":"image\u002Fpng","sizes":"16x16","href":"\u002Ffavicon\u002Ffavicon-16x16.png"},{"rel":"manifest","href":"\u002Ffavicon\u002Fsite.webmanifest"},{"rel":"mask-icon","href":"\u002Ffavicon\u002Fsafari-pinned-tab.svg","color":"#da532c"}],"style":[],"script":[]},
+    head: {"title":"Timothé Joubert","htmlAttrs":{"lang":"fr"},"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"hid":"description","name":"description","content":"Description "},{"name":"format-detection","content":"telephone=no"},{"name":"google-site-verification","content":"o5sD6l8eVydQy3O8y0D3ETIcgafZZZwbNwKjh_1qimc"},{"hid":"version","name":"version","content":"1.0.0"}],"link":[{"rel":"apple-touch-icon","sizes":"180x180","href":"\u002Ffavicon\u002Fapple-touch-icon.png"},{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"},{"rel":"icon","type":"image\u002Fpng","sizes":"32x32","href":"\u002Ffavicon\u002Ffavicon-32x32.png"},{"rel":"icon","type":"image\u002Fpng","sizes":"16x16","href":"\u002Ffavicon\u002Ffavicon-16x16.png"},{"rel":"manifest","href":"\u002Ffavicon\u002Fsite.webmanifest"},{"rel":"mask-icon","href":"\u002Ffavicon\u002Fsafari-pinned-tab.svg","color":"#da532c"}],"script":[{"src":"\u002Fnetlify-identity.js"}],"style":[]},
 
     store,
     router,
@@ -214,36 +212,28 @@ async function createApp(ssrContext, config = {}) {
   }
   // Plugin execution
 
-  if (typeof nuxt_plugin_plugin_663eac0b === 'function') {
-    await nuxt_plugin_plugin_663eac0b(app.context, inject)
+  if (typeof nuxt_plugin_plugin_5377ea6a === 'function') {
+    await nuxt_plugin_plugin_5377ea6a(app.context, inject)
   }
 
-  if (process.client && typeof nuxt_plugin_pluginclient_75936d5c === 'function') {
-    await nuxt_plugin_pluginclient_75936d5c(app.context, inject)
+  if (process.client && typeof nuxt_plugin_pluginclient_4b4af213 === 'function') {
+    await nuxt_plugin_pluginclient_4b4af213(app.context, inject)
   }
 
-  if (process.server && typeof nuxt_plugin_pluginserver_2aefbada === 'function') {
-    await nuxt_plugin_pluginserver_2aefbada(app.context, inject)
+  if (process.server && typeof nuxt_plugin_pluginserver_9df738ca === 'function') {
+    await nuxt_plugin_pluginserver_9df738ca(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_image_ab4d66c8 === 'function') {
-    await nuxt_plugin_image_ab4d66c8(app.context, inject)
+  if (typeof nuxt_plugin_image_71ade17b === 'function') {
+    await nuxt_plugin_image_71ade17b(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_cookieuniversalnuxt_76a28d49 === 'function') {
-    await nuxt_plugin_cookieuniversalnuxt_76a28d49(app.context, inject)
+  if (process.client && typeof nuxt_plugin_pluginclient_966b1e34 === 'function') {
+    await nuxt_plugin_pluginclient_966b1e34(app.context, inject)
   }
 
-  if (process.server && typeof nuxt_plugin_httpserver_4e28f064 === 'function') {
-    await nuxt_plugin_httpserver_4e28f064(app.context, inject)
-  }
-
-  if (typeof nuxt_plugin_http_fa7a6ae2 === 'function') {
-    await nuxt_plugin_http_fa7a6ae2(app.context, inject)
-  }
-
-  if (typeof nuxt_plugin_strapi_8732b5a4 === 'function') {
-    await nuxt_plugin_strapi_8732b5a4(app.context, inject)
+  if (process.server && typeof nuxt_plugin_pluginserver_1a83e26e === 'function') {
+    await nuxt_plugin_pluginserver_1a83e26e(app.context, inject)
   }
 
   // Lock enablePreview in context

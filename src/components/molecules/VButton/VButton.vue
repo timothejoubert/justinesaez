@@ -188,41 +188,6 @@ export default Vue.extend({
             @include v-button-size($key);
         }
     }
-
-    // variants
-    &--variant-navigation {
-        @include v-button-default-css-vars($v-button-navigation-rounded, 'rounded');
-
-        transition: transform 0.25s;
-
-        @each $key, $value in $v-button-navigation-rounded {
-            &.root--size-#{$key} {
-                @include v-button-size($key, 'navigation');
-            }
-        }
-    }
-
-    &--variant-navigation:not(#{&}--disabled) {
-        background-color: var(--theme-default-15);
-        color: var(--theme-default);
-    }
-
-    &--variant-navigation#{&}--disabled {
-        color: #626262;
-    }
-
-    @media (hover: hover) {
-        &--variant-navigation:not(#{&}--disabled):hover:not(:active) {
-            --theme-button-background-hovered: var(--theme-default);
-
-            color: var(--theme-on-default);
-            transform: scale(1.1);
-        }
-        &--variant-navigation:not(#{&}--disabled):active {
-            color: var(--theme-on-default);
-            transform: scale(1.03);
-        }
-    }
 }
 
 .inner {
@@ -266,10 +231,6 @@ export default Vue.extend({
             border-color: var(--theme-default);
         }
     }
-
-    .root--variant-navigation & {
-        @include v-button-default-css-vars($v-button-navigation-inner, 'inner');
-    }
 }
 
 .icon {
@@ -297,11 +258,6 @@ export default Vue.extend({
         order: 2;
         margin-right: 0;
     }
-
-    // variants
-    .root--variant-navigation & {
-        @include v-button-default-css-vars($v-button-navigation-icon, 'icon');
-    }
 }
 
 .label {
@@ -320,11 +276,6 @@ export default Vue.extend({
     .root:not(.root--outlined) &,
     .root:not(.root--has-icon) & {
         padding: 0;
-    }
-
-    // variants
-    .root--variant-navigation & {
-        @include v-button-default-css-vars($v-button-navigation-label, 'label');
     }
 }
 </style>

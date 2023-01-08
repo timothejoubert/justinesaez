@@ -1,4 +1,4 @@
-import VSplitWord from '~/components/atoms/VSplitWord.vue'
+import VSplitWord from '~/components/atoms/VSplitWord/VSplitWord.vue'
 
 export default {
     title: 'Utils/SplitWord',

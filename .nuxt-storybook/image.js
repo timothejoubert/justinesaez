@@ -3,7 +3,7 @@ import { createImage} from '~image'
 import NuxtImg from '~image/components/nuxt-img.vue'
 import NuxtPicture from '~image/components/nuxt-picture.vue'
 
-import * as staticRuntime$c606 from '/Users/timothejoubert/Documents/03.websites/tim/portfolio-tim/frontend/node_modules/@nuxt/image/dist/runtime/providers/static.js'
+import * as staticRuntime$4b31 from '/Users/timothejoubert/Documents/03.websites/tim/netlify-cms-starter/node_modules/@nuxt/image/dist/runtime/providers/static.js'
 
 const imageOptions = {
   "screens": {
@@ -22,7 +22,7 @@ const imageOptions = {
 }
 
 imageOptions.providers = {
-  ['static']: { provider: staticRuntime$c606, defaults: {} }
+  ['static']: { provider: staticRuntime$4b31, defaults: {} }
 }
 
 Vue.component(NuxtImg.name, NuxtImg)

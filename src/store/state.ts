@@ -8,11 +8,6 @@ export default (): RootState => ({
     animationEnter: false,
     splashScreenFinish: false,
     alreadyVisited: false,
-    // UI
-    isAboutOpen: false,
-    isUiOptionsOpen: false,
-    selectedFilter: [],
-    activeFilters: [],
     // General
     errorPage: null,
     windowWidth: 0,

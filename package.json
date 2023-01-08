@@ -44,6 +44,7 @@
     "eslint-plugin-nuxt": "^2.0.0",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-vue": "^7.12.1",
+    "fs": "^0.0.1-security",
     "include-media": "^1.4.10",
     "netlify": "^13.1.0",
     "postcss-loader": "^3",
