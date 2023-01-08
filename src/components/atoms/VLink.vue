@@ -1,29 +1,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import type { PropType, VNode } from 'vue'
-
-function isRelativePath(path?: string): boolean {
-    return !!path && path.charAt(0) === '/'
-}
-
-function checkDomain(url?: string): string {
-    if (!url) return ''
-    if (url.indexOf('//') === 0) {
-        url = location.protocol + url
-    }
-    return url
-        .toLowerCase()
-        .replace(/([a-z])?:\/\//, '$1')
-        .split('/')[0]
-}
-
-function isExternalPath(url?: string): boolean {
-    return (
-        !!url &&
-        ((url.length > 1 && url.includes(':')) || url.includes('//')) &&
-        checkDomain(location.href) !== checkDomain(url)
-    )
-}
+import { isExternalPath, isRelativePath } from '~/types/link'
 
 interface LinkDocument {
     type?: string

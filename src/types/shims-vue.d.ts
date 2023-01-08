@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import { DefaultProps } from 'vue/types/options'
-import { RoadizDocument } from '@roadiz/abstract-api-client/dist/types/roadiz'
-import { EventsApi } from '~/src/types/event'
 
 declare module '*.vue' {
     export default Vue
@@ -15,10 +13,7 @@ declare module 'vue/types/vue' {
     interface Vue {
         $style: { [key: string]: string }
         $documentURL(path: string | undefined): string
-        $viewerLocation(document: RoadizDocument): Location
         $resourceUrl(path: string | undefined): string | undefined
-        $eventDateURL(eventDate: EventsApi.EventDate): string | undefined | null
-        $roadizURL(path: string): string
     }
 }
 

@@ -3,7 +3,8 @@
 # check if locale storage site_url is not production url
 local_backend: true
 
-#site_url: https://timothe-joubert.netlify.app/
+#https://timothe-joubert.netlify.app/
+site_url: http://localhost:3000/
 logo_url: https://timothe-joubert.netlify.app/icon.png
 
 #publish_mode: editorial_workflow

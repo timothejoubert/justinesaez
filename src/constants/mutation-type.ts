@@ -6,10 +6,6 @@ enum MutationType {
     SPLASH_SCREEN_FINISH = 'splashScreenFinish',
     ANIMATION_ENTER = 'animationEnter',
     ALREADY_VISITED = 'alreadyVisited',
-    IS_ABOUT_OPEN = 'isAboutOpen',
-    IS_UI_OPTIONS_OPEN = 'isUiOptionsOpen',
-    SELECTED_FILTER = 'selectedFilter',
-    ACTIVE_FILTERS = 'activeFilters',
     ERROR_PAGE = 'errorPage',
 }
 

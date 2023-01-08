@@ -3,31 +3,31 @@
         <nuxt-link ref="back-link" to="/" :class="$style.head">
             <v-button-cross :class="$style.cross" />
             <v-split-word
-                v-if="pageData.title"
+                v-if="project.title"
                 ref="title"
                 :class="[$style.title, 'text-h3']"
-                :content="pageData.title"
+                :content="project.title"
             />
         </nuxt-link>
         <div v-if="displayTags" :class="$style.tags">
             <v-pill
-                v-for="(tag, indexTag) in pageData.tags"
+                v-for="(tag, indexTag) in project.tags"
                 :key="indexTag"
                 :class="$style.tag"
                 size="s"
                 :label="tag.name"
             />
         </div>
-        <p :class="[$style.description, 'body-xs']">{{ pageData.description }}</p>
+        <p :class="[$style.description, 'body-xs']">{{ project.description }}</p>
         <template v-if="links">
             <nuxt-link v-for="link in links" :key="link.id" :to="link.url" :class="$style.link">{{
                 link.label
             }}</nuxt-link>
         </template>
-        <ul v-if="medias.length" :class="$style.images">
+        <ul v-if="medias && medias.length" :class="$style.images">
             <v-counter-dom inline :enter="enter" transition-name="item-project" :start-index="5">
                 <li v-for="(media, i) in medias" :key="i" :class="$style.image">
-                    <v-image :strapi-image="media" />
+                    <v-image :image="media" />
                 </li>
             </v-counter-dom>
         </ul>
@@ -43,26 +43,26 @@ import VButtonCross from '~/components/atoms/VButtonCross.vue'
 import VCounterDom from '~/components/atoms/VCounterDom.vue'
 import toBoolean from '~/utils/to-boolean'
 import GeneralsConst from '~/constants/generals'
+import VImage from '~/components/atoms/VImage.vue'
 
 export default mixins(Page).extend({
     name: 'Project',
-    components: { VSplitWord, VPill, VButtonCross, VCounterDom },
+    components: { VImage, VSplitWord, VPill, VButtonCross, VCounterDom },
     data() {
         return {
-            pageData: {} as ProjectContent,
+            project: {} as ProjectContent,
             enter: false,
         }
     },
     computed: {
-        medias(): ImageAttributes[] {
-            const thumb = this.pageData.thumbnail
-
-            const others = this.pageData?.medias?.filter((media: ImageAttributes) => !!media) || []
-            if (thumb && !!others.length) return others // others.splice(0, 0, thumb)
-            return [thumb]
+        medias(): string[] | null {
+            const thumb = this.project.thumbnail
+            const gallery = this.project?.gallery?.filter((media) => !!media) || []
+            if (thumb && !!gallery.length) return gallery // others.splice(0, 0, thumb)
+            return typeof thumb === 'string' ? [thumb] : null
         },
         links(): Link[] | undefined {
-            return this.pageData.links?.filter((link) => link.url)
+            return this.project.links?.filter((link) => link.url)
         },
         displayTags(): boolean {
             return toBoolean(GeneralsConst.DISPLAY_PROJECT_TAGS)
@@ -75,7 +75,8 @@ export default mixins(Page).extend({
         this.enter = true
         const pageSlug = this.$route.params.slug
         const projects = this.$store.state.projectsData
-        this.pageData = projects.filter((project: ProjectContent) => project.slug === pageSlug)[0]
+        this.project = projects.filter((project: ProjectContent) => project.slug === pageSlug)[0]
+        console.log('current project', this.project)
         ;((this.$refs['back-link'] as Vue)?.$el as HTMLElement)?.focus()
     },
 })

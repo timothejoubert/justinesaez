@@ -1,6 +1,6 @@
 <script lang="ts">
-import Vue, { PropType } from 'vue'
-import type { VNode } from 'vue'
+import Vue from 'vue'
+import type { VNode, PropType } from 'vue'
 
 interface SplitWordProps {
     enabled: boolean

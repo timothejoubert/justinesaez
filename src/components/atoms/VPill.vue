@@ -4,7 +4,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-// import type { PropType } from 'vue'
 
 export default Vue.extend({
     name: 'VPill',
@@ -15,7 +14,11 @@ export default Vue.extend({
     },
     computed: {
         rootClass(): (string | boolean | undefined)[] {
-            return [this.$style.root, typeof this.size === 'string' && 'body-' + this.size, typeof this.theme === 'string' && this.$style['root--' + this.theme]]
+            return [
+                this.$style.root,
+                typeof this.size === 'string' && 'body-' + this.size,
+                typeof this.theme === 'string' && this.$style['root--' + this.theme],
+            ]
         },
     },
 })

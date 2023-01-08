@@ -3,14 +3,35 @@ import Vue from 'vue'
 import type { PropType, VNode } from 'vue'
 import ImagePlaceHolder from '~/assets/images/icons/not-found.svg?sprite'
 
-type ImageExtension = '.gif' | '.png' | '.jpg' | '.jpeg' | '.webp'
-type VideoExtension = '.gif' | '.mp4' | '.mov'
+function isImageObject(image: CloudinaryImage | string): image is CloudinaryImage {
+    return typeof image !== 'string'
+}
+
+interface CloudinaryImage {
+    formats: CloudinaryImageFormats
+}
+
+type CloudinaryFormats = 'large' | 'medium' | 'small' | string
+
+type CloudinaryImageFormats = {
+    [key in CloudinaryFormats]: CloudinaryImageContent
+}
+
+interface CloudinaryImageContent {
+    url?: string
+    width?: number
+    height?: number
+    alternativeText?: string
+    extension?: ImageExtension
+}
+
+type ImageExtension = 'gif' | 'png' | 'jpg' | 'jpeg' | 'webp'
 
 export default Vue.extend({
     name: 'VImage',
     components: { ImagePlaceHolder },
     props: {
-        strapiImage: Object as PropType<ImageAttributes>,
+        image: [String, Object] as PropType<CloudinaryImage | string>,
     },
     data() {
         return {
@@ -25,49 +46,39 @@ export default Vue.extend({
         }
     },
     render(createElement): VNode {
-        // console.log(this.strapiImage)
-        const mainImage = this.strapiImage
-        const img = mainImage || this.strapiImage?.formats?.large
-
+        const img = this.image
         if (!img) return createElement('')
 
-        const { url, width, height, ext } = img || {}
+        const imgAttributes: Record<string, any> = {}
 
-        // TODO: detect if dev or prod mode for display right path
-        const baseUrl = this.$config.baseUrl
+        if (!isImageObject(img)) {
+            imgAttributes.src = img as string
+        } else {
+            const largeImage = (img as CloudinaryImage)?.formats?.large
+            imgAttributes.src = largeImage?.url || ''
+            imgAttributes.alt = largeImage?.alternativeText || 'text alternative fallback'
+            imgAttributes.width = largeImage?.width || ''
+            imgAttributes.height = largeImage?.height || ''
 
-        let srcSet = ''
-        let imgSizes = ''
-        // (max-width: 640px) 100vw,
-        // get srcset string from all img formats
-        if (mainImage && !!Object.getOwnPropertyDescriptor(mainImage, 'formats') && !!mainImage.formats) {
-            Object.keys(mainImage.formats)
-                .sort((prev: string, next: string) => {
-                    const formats = mainImage?.formats as ImageFormats
-                    if (!formats) return 0
-                    const prevFormat = formats[prev as ImageFormatName]
-                    const nextFormat = formats[next as ImageFormatName]
-                    return (prevFormat?.width || 0) - (nextFormat?.width || 0)
-                })
-                .forEach((formatKey: string, index: number, formatsKey: string[]) => {
-                    const format = mainImage?.formats as ImageFormats
-                    const formatData = format[formatKey as ImageFormatName] as ImageData
-                    if (!formatData) return
-                    const separator = index === formatsKey.length - 1 ? '' : ','
-                    srcSet += `${formatData.url} ${formatData.width}w` + separator
-                    imgSizes += `(max-width: ${formatData.width}px) 50vw` + separator
-                })
-        }
-
-        const imgAttributes: Record<string, any> = {
-            srcset: srcSet,
-            sizes: imgSizes,
-            src:
-                'https://res.cloudinary.com/duiyjc3zu/image/upload/v1671131988/large_Capture_d_ecran_2022_12_07_a_22_14_30_387b14f5a5.png' ||
-                baseUrl + url,
-            alt: img?.alternativeText || 'text alternative fallback',
-            width: width || '',
-            height: height || '',
+            if ('formats' in img && !!img.formats) {
+                // (max-width: 640px) 100vw,
+                Object.keys(img.formats)
+                    .sort((prev: CloudinaryFormats, next: CloudinaryFormats) => {
+                        const formats = img?.formats
+                        if (!formats) return 0
+                        const prevFormat = formats[prev]
+                        const nextFormat = formats[next]
+                        return (prevFormat?.width || 0) - (nextFormat?.width || 0)
+                    })
+                    .forEach((formatKey: string, index: number, formatsKey: string[]) => {
+                        const format = img?.formats
+                        const formatData = format[formatKey]
+                        if (!formatData) return
+                        const separator = index === formatsKey.length - 1 ? '' : ','
+                        imgAttributes.srcSet += `${formatData.url} ${formatData.width}w` + separator
+                        imgAttributes.imgSizes += `(max-width: ${formatData.width}px) 50vw` + separator
+                    })
+            }
         }
 
         const imgNode = createElement('img', {
@@ -94,116 +105,11 @@ export default Vue.extend({
                   },
                   [imgNode]
               )
-        // let width = 0
-        // if (typeof this.width !== 'undefined')
-        //   width = this.width === 'string' ? parseFloat(this.width) : (this.width as number)
-        // else if (this.crop) width = parseFloat(this.crop.split('x')[0])
-        // else if (this.image?.imageWidth) width = parseFloat(this.image.imageWidth)
-        //
-        // let height = 0
-        // if (this.height) height = typeof this.height === 'string' ? parseFloat(this.height) : this.height
-        // else if (this.crop) height = parseFloat(this.crop.split('x')[1])
-        // else if (this.image?.imageHeight) height = parseFloat(this.image.imageHeight)
-        //
-        // // image
-        // const modifiersKeys = Object.keys(interventionRequestProps).filter((key) => !['width', 'height'].includes(key))
-        // const imgModifiers = { ...(this.modifiers || {}) }
-        // modifiersKeys.forEach((key) => {
-        //   if (typeof this.$props[key] !== 'undefined') imgModifiers[key] = this.$props[key]
-        // })
-        // const imgProps: Record<string, any> = {
-        //   ...this.$props,
-        //   src: src || this.src,
-        //   alt: alt || this.alt,
-        //   width: (!this.ratio && width) || '',
-        //   height: (!this.ratio && height) || '',
-        //   modifiers: imgModifiers,
-        // }
-        // const img = createElement(this.tag === 'img' || !processable ? 'nuxt-img' : 'nuxt-picture', {
-        //   props: imgProps,
-        //   on: {
-        //     load: () => {
-        //       this.loaded = true
-        //     },
-        //   },
-        // })
-        //
-        // if (this.ratio || copyright || this.placeholder || this.rounded) {
-        //   const figureStyle: Record<string, string> = {}
-        //   const children: VNode[] = [img]
-        //
-        //   if (this.ratio) {
-        //     if (typeof this.ratio === 'number') {
-        //       figureStyle.paddingBottom = this.ratio * 100 + '%'
-        //     } else if (width && height) {
-        //       figureStyle.paddingBottom = (height / width) * 100 + '%'
-        //     }
-        //   }
-        //
-        //   if (this.placeholder) {
-        //     let background
-        //
-        //     if (typeof this.placeholder === 'string') {
-        //       background = this.placeholder
-        //     } else if (this.image?.imageAverageColor) {
-        //       background = this.image?.imageAverageColor
-        //       // background = context.parent.$img(this.image.relativePath, {
-        //       //     ...imgModifiers,
-        //       //     width: 50,
-        //       //     blur: 10,
-        //       // })
-        //     }
-        //
-        //     if (background) figureStyle.background = background
-        //   }
-        //
-        //   if (copyright) {
-        //     children.push(
-        //       createElement(
-        //         'VInformation',
-        //         {
-        //           class: [
-        //             this.$style.copyright,
-        //             this.copyrightPlacement && this.$style['copyright--' + this.copyrightPlacement],
-        //           ],
-        //           props: {
-        //             placement: this.copyrightPlacement === 'top' ? 'bottom-end' : 'top-end',
-        //           },
-        //         },
-        //         copyright
-        //       )
-        //     )
-        //   }
-        //
-        //   return createElement(
-        //     'figure',
-        //     {
-        //       style: figureStyle,
-        //       class: [
-        //         this.$style.root,
-        //         this.ratio && this.$style['root--ratio'],
-        //         // this.placeholder && this.$style['root--placeholder'],
-        //         this.loading === 'lazy' && this.$style['root--lazy'],
-        //         this.loaded && this.$style['root--loaded'],
-        //         this.rounded && this.$style['root--rounded'],
-        //         this.roundedReady && this.$style['root--rounded-ready'],
-        //         this.rounded === 'reverse' && this.$style['root--rounded-reverse'],
-        //       ],
-        //     },
-        //     children
-        //   )
-        // }
-        //
-        // return img
     },
 })
 </script>
 
 <style lang="scss" module>
-$rounded-border-radius-x: 50%;
-$rounded-border-radius-y: 39%;
-$rounded-border-radius: $rounded-border-radius-x $rounded-border-radius-y;
-
 .root {
     display: inline-block;
     width: var(--figure-width);

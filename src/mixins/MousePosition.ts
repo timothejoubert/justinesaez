@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import {throttle} from "throttle-debounce";
+import { throttle } from 'throttle-debounce'
 
 interface MousePosition {
     x: number
@@ -10,27 +10,17 @@ export default Vue.extend({
     data() {
         return {
             mousePosition: {} as MousePosition,
-            mouseMove: false,
-            startMovingData: {} as Date,
-            isMovingCallback: throttle(300, (this as any).isMoving),
+            moveCallback: throttle(300, (this as any).onMouseMove),
         }
     },
     mounted() {
-        window.addEventListener('mousemove', this.onMouseMove)
+        window.addEventListener('mousemove', this.moveCallback)
     },
     beforeDestroy() {
-        window.removeEventListener('mousemove', this.onMouseMove)
+        window.removeEventListener('mousemove', this.moveCallback)
     },
     methods: {
-        isMoving() {
-            this.mouseMove = false
-        },
         onMouseMove(event: MouseEvent) {
-            this.startMovingData = new Date()
-            // this.isMovingCallback()
-            // window.setTimeout( () => this.mouseMove = false,  500)
-            this.mouseMove = true
-
             this.mousePosition = {
                 x: event.clientX,
                 y: event.clientY,

@@ -49,13 +49,7 @@ export default Vue.extend({
     },
     methods: {
         getMetaImage(): string | undefined {
-            const thumbnail: ImageDataContent | false =
-                !!this.pageData?.thumbnail?.data &&
-                (Array.isArray(this.pageData.thumbnail.data)
-                    ? (this.pageData.thumbnail.data[0] as ImageDataContent)
-                    : this.pageData.thumbnail.data)
-
-            return thumbnail ? thumbnail?.attributes?.url : '/images/share.jpg'
+            return this.pageData?.shareImg || '/images/share.jpg'
         },
         getPageUrl(): string {
             return this.$config.baseURL + this.$route.fullPath.substring(1)

@@ -36,6 +36,7 @@
     "@nuxtjs/storybook": "4.2.0",
     "@nuxtjs/style-resources": "^1.2.0",
     "@nuxtjs/stylelint-module": "^4.0.0",
+    "@types/": "nuxt/content",
     "@types/netlify-identity-widget": "^1.9.3",
     "css-loader": "^4.2.0",
     "eslint": "^7.29.0",

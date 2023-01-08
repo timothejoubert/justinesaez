@@ -41,25 +41,8 @@ export default {
             { rel: 'mask-icon', href: '/favicon/safari-pinned-tab.svg', color: '#da532c' },
         ],
         script: [
-            { src: '/js/netlify-identity.js' }, // load script in your static folder
+            { src: '/netlify-identity.js' }, // load script in your static folder
         ],
-    },
-
-    pwa: {
-        icon: {
-            source: 'static/favicon.ico',
-            filename: 'favicon.ico',
-        },
-        manifest: {
-            name: siteName,
-            lang: locale,
-        },
-        meta: {
-            name: siteName,
-            lang: process.env.DEFAULT_LOCALE,
-            ogHost: process.env.APP_URL,
-            ogImage: '/share.jpg',
-        },
     },
 
     env: {
