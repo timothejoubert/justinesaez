@@ -6,11 +6,11 @@
         v-bind="linkProps"
         @click="onClick"
     >
-        <span ref="inner" class="v-button__inner">
-            <span v-if="$slots.icon || $scopedSlots.icon" class="v-button__icon">
+        <span ref="inner" :class="$style.inner">
+            <span v-if="$slots.icon || $scopedSlots.icon" :class="$style.icon">
                 <slot name="icon" />
             </span>
-            <span v-if="$slots.default || $scopedSlots.default || label" class="v-button__label">
+            <span v-if="$slots.default || $scopedSlots.default || label" :class="$style.label">
                 <slot>{{ label }}</slot>
             </span>
         </span>
@@ -19,8 +19,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import './_hover.scss'
-import { isPromoteFilter, isRandomFilter } from '~/utils/get-input-type'
+import { PropType } from 'vue/types/options'
+
+export type Theme = 'dark' | 'light'
+type Size = 's' | 'm'
+type Color = 'primary' | 'secondary'
+export type Variant = 'navigation'
 
 function isRelativePath(path: string): boolean {
     return path.charAt(0) === '/'
@@ -29,41 +33,46 @@ function isRelativePath(path: string): boolean {
 export default Vue.extend({
     name: 'VButton',
     props: {
-        name: String,
         filled: Boolean,
-        label: [String, Boolean],
-        size: [String, Boolean],
+        label: [String, Boolean] as PropType<string | false>,
+        size: [String, Boolean] as PropType<Size | false>,
         elevated: Boolean,
-        rounded: Boolean,
+        rounded: {
+            type: Boolean,
+            default: true,
+        },
+        theme: {
+            type: [String, Boolean] as PropType<Theme | false>,
+            default: 'dark',
+        },
         outlined: Boolean,
         disabled: Boolean,
-        tag: [String, Boolean],
-        theme: [String, Boolean],
-        color: [String, Boolean],
-        direction: {
-            type: [String, Boolean],
-            validator(value): boolean {
-                return (typeof value === 'string' && ['ltr', 'rtl'].includes(value)) || typeof value === 'boolean'
-            },
-            default: 'rtl',
+        tag: [String, Boolean] as PropType<string | false>,
+        color: [String, Boolean] as PropType<Color | false>,
+        iconLast: {
+            type: Boolean,
+            default: true,
         },
-        href: [String, Boolean], // external link
+        href: [String, Boolean] as PropType<string | false>, // external (absolute) or internal (relative) link
         to: [String, Object, Boolean], // internal link (use NuxtLink)
+        variant: [String, Boolean] as PropType<Variant | false>,
     },
     computed: {
         classNames(): (string | boolean | undefined)[] {
             return [
-                'v-button',
-                this.outlined && 'v-button--outlined',
-                this.filled && 'v-button--filled',
-                this.elevated && 'v-button--elevated',
-                this.disabled && 'v-button--disabled',
-                this.rounded && 'v-button--rounded',
-                !this.$slots.default && !this.$scopedSlots.default && !this.label && 'v-button--icon',
-                this.direction === 'rtl' && 'v-button--rtl',
-                typeof this.size === 'string' && 'v-button--size-' + this.size,
-                typeof this.theme === 'string' && 'v-button--theme-' + this.theme,
-                typeof this.color === 'string' && 'v-button--color-' + this.color,
+                this.$style.root,
+                this.outlined && this.$style['root--outlined'],
+                this.filled && this.$style['root--filled'],
+                this.elevated && this.$style['root--elevated'],
+                this.disabled && this.$style['root--disabled'],
+                this.rounded && this.$style['root--rounded'],
+                (this.$slots.icon || this.$scopedSlots.icon) && this.$style['root--has-icon'],
+                (this.$slots.default || this.$scopedSlots.default || this.label) && this.$style['root--has-label'],
+                this.iconLast && this.$style['root--icon-last'],
+                typeof this.size === 'string' && this.$style['root--size-' + this.size],
+                typeof this.theme === 'string' && this.$style['root--theme-' + this.theme],
+                typeof this.color === 'string' && this.$style['root--color-' + this.color],
+                typeof this.variant === 'string' && this.$style['root--variant-' + this.variant],
             ]
         },
         internalTag(): string {
@@ -90,27 +99,23 @@ export default Vue.extend({
     },
     methods: {
         onClick(event: MouseEvent) {
-            console.log('click on:', this.name)
-            if (isRandomFilter(this.name) || isPromoteFilter(this.name)) {
-                this.$emit('update', { value: '', inputName: this.name })
-            } else this.$emit('click', event)
+            this.$emit('click', event)
         },
     },
 })
 </script>
 
-<style lang="scss">
+<style lang="scss" module>
 @use 'sass:math';
 
-.v-button {
-    @include v-button-default-css-vars($v-button-vars);
+.root {
+    @include v-button-default-css-vars($v-button);
     @include theme-variants;
 
     display: inline-block;
     border: none;
     color: inherit;
     font-weight: bold;
-    line-height: math.div(22, 18);
     text-decoration: none;
     transition: background-color 0.3s;
 
@@ -123,15 +128,15 @@ export default Vue.extend({
     }
 
     &--rounded {
-        @include v-button-default-css-vars($v-button-rounded-vars, '-rounded');
+        @include v-button-default-css-vars($v-button-rounded, 'rounded');
     }
 
     &--color-primary {
-        @include v-button-color($color: primary);
+        color: var(--theme-primary);
     }
 
     &--color-secondary {
-        @include v-button-color($color: secondary);
+        color: var(--theme-secondary);
     }
 
     &--filled {
@@ -139,84 +144,148 @@ export default Vue.extend({
         color: var(--theme-on-default);
     }
 
+    &--outlined {
+        color: var(--theme-default);
+    }
+
     &--filled#{&}--disabled {
-        background-color: rgba(black, 0.2);
-        color: color('grey-500');
+        background-color: rgba(#000, 0.2);
+        color: rgba(#000, 0.7);
     }
 
     &:not(#{&}--filled)#{&}--disabled {
-        color: color('grey-500');
+        color: rgba(#000, 0.7);
     }
 
     &--outlined#{&}--disabled {
         background-color: transparent;
-        color: rgba(black, 0.3);
+        color: rgba(#000, 0.3);
     }
 
     &--filled#{&}--color-primary {
-        @include v-button-color($color: primary, $filled: true);
+        background-color: var(--theme-primary);
+        color: var(--theme-on-primary);
     }
 
     &--filled#{&}--color-secondary {
-        @include v-button-color($color: secondary, $filled: true);
+        background-color: var(--theme-secondary);
+        color: var(--theme-on-secondary);
     }
 
     &--elevated {
-        box-shadow: 0 2px 32px 0 rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 32px 0 rgba(#000, 0.1);
+    }
+
+    @media (hover: hover) {
+        &--filled:not(#{&}--disabled):hover {
+            background-color: var(--theme-button-background-hovered);
+        }
     }
 
     // sizes
-    $vars: map-remove($v-button-vars, default);
-
-    @each $key, $value in $vars {
+    @each $key, $value in $v-button {
         &--size-#{$key} {
             @include v-button-size($key);
         }
     }
+
+    // variants
+    &--variant-navigation {
+        @include v-button-default-css-vars($v-button-navigation-rounded, 'rounded');
+
+        transition: transform 0.25s;
+
+        @each $key, $value in $v-button-navigation-rounded {
+            &.root--size-#{$key} {
+                @include v-button-size($key, 'navigation');
+            }
+        }
+    }
+
+    &--variant-navigation:not(#{&}--disabled) {
+        background-color: var(--theme-default-15);
+        color: var(--theme-default);
+    }
+
+    &--variant-navigation#{&}--disabled {
+        color: #626262;
+    }
+
+    @media (hover: hover) {
+        &--variant-navigation:not(#{&}--disabled):hover:not(:active) {
+            --theme-button-background-hovered: var(--theme-default);
+
+            color: var(--theme-on-default);
+            transform: scale(1.1);
+        }
+        &--variant-navigation:not(#{&}--disabled):active {
+            color: var(--theme-on-default);
+            transform: scale(1.03);
+        }
+    }
 }
 
-.v-button__inner {
-    @include v-button-default-css-vars($v-button-inner-vars, '-inner');
+.inner {
+    @include v-button-default-css-vars($v-button-inner, 'inner');
 
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: left;
 
-    .v-button:not(.v-button--outlined):not(.v-button--filled) & {
-        padding: 0;
-    }
-
-    .v-button--icon & {
-        padding: 0;
-    }
-
-    .v-button--outlined & {
-        border-width: var(--btn-border-width, 3px);
+    .root--outlined & {
+        border-width: var(--v-button-border-width, 1px);
         border-style: solid;
+        border-color: var(--theme-button-outline-color);
         border-radius: inherit;
         transition: all 0.3s;
     }
 
-    .v-button--outlined.v-button--color-primary & {
-        @include v-button-color($color: primary, $outlined: true);
+    .root--outlined.root--color-primary & {
+        border-color: var(--theme-primary);
     }
 
-    .v-button--outlined.v-button--color-secondary & {
-        @include v-button-color($color: secondary, $outlined: true);
+    .root--outlined.root--color-secondary & {
+        border-color: var(--theme-secondary);
+    }
+
+    .root:not(.root--outlined):not(.root--filled) & {
+        padding: 0;
+    }
+
+    .root--has-icon:not(.root--has-label) & {
+        padding: 0;
+    }
+
+    .root--has-icon.root--has-label.root--icon-last & {
+        @include v-button-default-css-vars($v-button-inner-icon-last, 'inner');
+    }
+
+    @media (hover: hover) {
+        .root--outlined:not(.root--disabled):hover & {
+            border-color: var(--theme-default);
+        }
+    }
+
+    .root--variant-navigation & {
+        @include v-button-default-css-vars($v-button-navigation-inner, 'inner');
     }
 }
 
-.v-button__icon {
-    @include v-button-default-css-vars($v-button-icon-vars, '-icon');
-    @include v-button-default-css-vars($v-button-icon-size-vars, '-icon-size');
+.icon {
+    @include v-button-default-css-vars($v-button-icon, 'icon');
 
     display: flex;
     align-items: center;
     justify-content: center;
     line-height: 0;
+    transition: color 0.3s, transform 0.3s;
 
-    .v-button:not(.v-button--rtl) &:first-child {
+    @media (prefers-reduced-motion: reduce) {
+        transition: none;
+    }
+
+    .root:not(.root--icon-last) & {
         margin-left: 0;
     }
 
@@ -224,40 +293,38 @@ export default Vue.extend({
         margin: 0;
     }
 
-    .v-button--rtl & {
+    .root--icon-last & {
         order: 2;
         margin-right: 0;
     }
 
-    & svg {
-        width: var(--v-button-icon-size-width);
-        height: auto;
+    // variants
+    .root--variant-navigation & {
+        @include v-button-default-css-vars($v-button-navigation-icon, 'icon');
     }
 }
 
-.v-button__label {
-    @include v-button-default-css-vars($v-button-label-vars, '-label');
+.label {
+    @include v-button-default-css-vars($v-button-label, 'label');
 
-    line-height: 0;
-    transition: color 0.3s;
+    font-weight: 450;
 
-    @media (prefers-reduced-motion: reduce) {
-        transition: none;
+    .root--outlined.root--icon-last.root--has-icon & {
+        padding-right: rem(8);
     }
 
-    .v-button:not(.v-button--filled):not(.v-button--outlined) & {
-        position: relative;
+    .root--outlined:not(.root--icon-last):not(.root--has-icon) & {
+        padding-left: 0;
+    }
 
-        &::before {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: currentColor;
-            content: '';
-            opacity: 0;
-        }
+    .root:not(.root--outlined) &,
+    .root:not(.root--has-icon) & {
+        padding: 0;
+    }
+
+    // variants
+    .root--variant-navigation & {
+        @include v-button-default-css-vars($v-button-navigation-label, 'label');
     }
 }
 </style>
