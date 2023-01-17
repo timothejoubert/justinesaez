@@ -21,6 +21,7 @@
     "@nuxtjs/cloudinary": "^1.0.3",
     "@nuxtjs/svg": "^0.4.0",
     "@types/throttle-debounce": "^5.0.0",
+    "marked": "^4.2.12",
     "netlify-cli": "^12.4.0",
     "nuxt": "^2.15.7",
     "portal-vue": "^2.1.7",

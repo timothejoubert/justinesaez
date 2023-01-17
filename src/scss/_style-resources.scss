@@ -2,8 +2,7 @@
 // all these resources will be included into every component imported by webpack
 // ⚠️ do not include css file
 
-@import "~include-media/dist/_include-media.scss";
-@import "vendors/include-media";
+@import "vendors";
 // functions
 @import "functions";
 // variables

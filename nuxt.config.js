@@ -59,6 +59,7 @@ export default {
     css: ['@/scss/main'],
 
     // https://github.com/nuxt-community/style-resources-module#setup
+    // can access @include... in all files
     styleResources: {
         scss: ['@/scss/_style-resources.scss'],
         hoistUseStatements: true,
