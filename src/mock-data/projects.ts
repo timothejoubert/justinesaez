@@ -1,4 +1,3 @@
-
 const PROJECTS_DATA: ProjectContent[] = [
     {
         '@type': 'project',
@@ -8,10 +7,10 @@ const PROJECTS_DATA: ProjectContent[] = [
         title: 'Projet 1',
         description: 'une courte description',
         thumbnail: '/share.jpg',
-        gallery: ['/share.jpg','/share.jpg','/share.jpg'],
+        gallery: ['/share.jpg', '/share.jpg', '/share.jpg'],
         content: 'une longue description',
         tags: ['tag 1', 'tag 2'],
-        link: 'https://www.google.com'
+        link: 'https://www.google.com',
     },
     {
         '@type': 'project',
@@ -21,10 +20,10 @@ const PROJECTS_DATA: ProjectContent[] = [
         title: 'Projet 2',
         description: 'une courte description',
         thumbnail: '/share.jpg',
-        gallery: ['/share.jpg','/share.jpg','/share.jpg'],
+        gallery: ['/share.jpg', '/share.jpg', '/share.jpg'],
         content: 'une longue description',
         tags: ['tag 1', 'tag 2'],
-        link: 'https://www.google.com'
+        link: 'https://www.google.com',
     },
 ]
 

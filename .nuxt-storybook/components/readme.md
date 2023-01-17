@@ -10,6 +10,8 @@ You can directly use them in pages and other components without the need to impo
 - `<VCounterDom>` | `<v-counter-dom>` (components/atoms/VCounterDom.vue)
 - `<VImage>` | `<v-image>` (components/atoms/VImage.vue)
 - `<VLink>` | `<v-link>` (components/atoms/VLink.vue)
+- `<VMarkdown>` | `<v-markdown>` (components/atoms/VMarkdown.vue)
 - `<VPill>` | `<v-pill>` (components/atoms/VPill.vue)
 - `<VSplitWord>` | `<v-split-word>` (components/atoms/VSplitWord/VSplitWord.vue)
 - `<VFooter>` | `<v-footer>` (components/organisms/VFooter.vue)
+- `<VSplashScreen>` | `<v-splash-screen>` (components/organisms/VSplashScreen.vue)

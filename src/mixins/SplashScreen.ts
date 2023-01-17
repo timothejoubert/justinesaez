@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import toBoolean from '~/utils/to-boolean'
-import GeneralsConst from '~/constants/generals'
+import GeneralsConst from '~/constants/app'
 
 export default Vue.extend({
     data() {

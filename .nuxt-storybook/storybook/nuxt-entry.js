@@ -11,7 +11,7 @@ import fetchMixin from '../mixins/fetch.client'
  * @nuxtjs/storybook
  * execute plugin scripts
  */
-window.__NUXT__ = { config: {"_app":{"basePath":"/","assetsPath":"/_nuxt/","cdnURL":null}} };
+window.__NUXT__ = { config: {"appTitle":"Timothé Joubert","_app":{"basePath":"/","assetsPath":"/_nuxt/","cdnURL":null}} };
 
 /**
  * Important: Import `createApp` after plugin scripts
