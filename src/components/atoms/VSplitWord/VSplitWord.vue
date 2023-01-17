@@ -1,11 +1,13 @@
 <script lang="ts">
 import Vue from 'vue'
 import type { VNode, PropType } from 'vue'
+import { throttle } from 'throttle-debounce'
 
 interface SplitWordProps {
     enabled: boolean
     content: string
     defaultHidden: boolean
+    breakWord: boolean
     transitionEndEvent: boolean
     split: SplitItem[]
     numberOfWordInLine: number
@@ -15,13 +17,13 @@ type SplitItem = 'letter' | 'word' | 'line'
 
 export default Vue.extend({
     name: 'VSplitWord',
-    // functional: true,
     props: {
         enabled: { type: Boolean, default: true },
         split: {
             type: Array as PropType<SplitItem[]>,
             default: () => ['letter'],
         },
+        breakWord: Boolean,
         numberOfWordInLine: {
             type: Number,
             default: 2,
@@ -30,9 +32,29 @@ export default Vue.extend({
         defaultHidden: Boolean,
         transitionEndEvent: Boolean,
     },
+    data() {
+        return {
+            triggerEventCount: 0,
+        }
+    },
+    mounted() {
+        if (this.transitionEndEvent) this.initTransitionEnd()
+    },
+    methods: {
+        initTransitionEnd() {
+            this.triggerEventCount++
+            const letters = this.$el.querySelectorAll('.split-letter')
+            if (!letters) return
+            letters[letters.length - 1]?.addEventListener('transitionend', this.onTransitionEnd, { once: true })
+        },
+        onTransitionEnd() {
+            this.$emit('transitionend')
+            if (this.triggerEventCount > 1) return
+            window.setTimeout(() => this.initTransitionEnd(), 300)
+        },
+    },
     render(createElement): VNode {
-        const { content, defaultHidden, transitionEndEvent, enabled, split, numberOfWordInLine } = this
-            .$props as SplitWordProps
+        const { content, defaultHidden, enabled, split, numberOfWordInLine } = this.$props as SplitWordProps
 
         const displayLetter = split.includes('letter')
         const displayWord = split.includes('word')
@@ -55,19 +77,17 @@ export default Vue.extend({
 
         const parsedLetters = (word: string): VNode[] => {
             const letters = word.split('')
+            // console.log('letters:', letters)
             return letters.map((letter: string, index: number) => {
                 indexLetter++
-                const event = {} as Record<'on', Record<string, () => void>>
-                if (index === letter.length - 1 && transitionEndEvent)
-                    event.on = { transitionend: () => this.$emit('transitionend') }
                 return createElement(
                     'div',
                     {
-                        ...event,
                         class: [
                             this.$style.letter,
                             defaultHidden && this.$style['letter--hide'],
                             letter === ' ' && this.$style['letter--last'],
+                            this.breakWord && this.$style['letter--break'],
                             'split-letter',
                         ],
                         style: { '--index-letter-in-word': index, '--index-letter-total': indexLetter },
@@ -157,13 +177,18 @@ export default Vue.extend({
 .letter {
     position: relative;
     display: inline-block;
-    transition-delay: calc(100ms * var(--index-letter-total, 1));
-    transition-duration: 0.8s;
+    transition-delay: calc(60ms * var(--index-letter-total, 1));
+    transition-duration: 0.6s;
     transition-property: transform, opacity, font-variation-settings;
     transition-timing-function: ease(out-quart);
 
     .root:not(.root--enable) & {
         display: inline;
+    }
+
+    &--last#{&}--break {
+        display: flex;
+        line-height: 0;
     }
 
     &--last::after {

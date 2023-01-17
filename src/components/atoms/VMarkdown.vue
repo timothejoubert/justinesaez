@@ -7,7 +7,7 @@ import { joinURL } from 'ufo'
 const renderer = new marked.Renderer()
 const linkRenderer = renderer.link
 
-renderer.link = (href, title, text) => {
+renderer.link = (href: string, title: string, text: string) => {
     let html = linkRenderer.call(renderer, href, title, text)
 
     if (href && href.startsWith('http') && !html.includes('target="_blank"')) {
@@ -194,7 +194,7 @@ export default Vue.extend({
         }
 
         li {
-            @include body-m;
+            @include text-body-m;
 
             padding: rem(2) 0 rem(2) rem(25);
             border: none;

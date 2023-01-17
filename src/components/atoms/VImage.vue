@@ -40,10 +40,8 @@ export default Vue.extend({
         }
     },
     mounted() {
-        if ('querySelector' in this.$el) {
-            const img = this.$el.querySelector('img')
-            if (img?.complete) this.loaded = true
-        }
+        const img = this.$el.querySelector('img')
+        if (img?.complete) this.loaded = true
     },
     render(createElement): VNode {
         const img = this.image

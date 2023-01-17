@@ -42,22 +42,22 @@
     @include over-title-xs;
 }
 
-.body-l {
-  @include body-l;
+.text-body-l {
+  @include text-body-l;
 }
 
-.body-m {
-    @include body-m;
+.text-body-m {
+    @include text-body-m;
 }
 
-.body-s {
-  @include body-s;
+.text-body-s {
+  @include text-body-s;
 }
 
-.body-xs {
-    @include body-xs;
+.text-body-xs {
+    @include text-body-xs;
 }
 
-.body-xxs {
-    @include body-xxs;
+.text-body-xxs {
+    @include text-body-xxs;
 }

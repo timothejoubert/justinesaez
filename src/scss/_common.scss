@@ -1,4 +1,8 @@
 html {
+    --color-main: #DBE6EC;
+    --color-bg: #131212;
+    --color-accent: #E3FD41;
+
     background-color: var(--theme-default);
     color: var(--theme-on-default);
 }
@@ -6,7 +10,7 @@ html {
 body {
     @include text-body-m;
 
-    //font-family: $suisse-int;
+    font-family: $noi;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }

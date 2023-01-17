@@ -104,6 +104,7 @@ export default {
     // https://fr.nuxtjs.org/docs/2.x/configuration-glossary/configuration-runtime-config/
     publicRuntimeConfig: {
         baseUrl: process.env.STRAPI_API_URL || process.env.LOCAL_API_URL,
+        appTitle: process.env.APP_TITLE,
     },
 
     // https://github.com/nuxt-community/svg-module

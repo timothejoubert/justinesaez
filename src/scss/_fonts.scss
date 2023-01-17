@@ -1,13 +1,5 @@
 @font-face {
     font-display: swap;
-    font-family: 'konstant';
-    font-style: normal;
-    font-weight: normal;
-    src: url('~assets/fonts/KonstantGrotesk.ttf') format('otf');
-}
-
-@font-face {
-    font-display: swap;
     font-family: 'noi';
     font-weight: 100 900;
     font-style: oblique 0deg 10deg;
@@ -26,14 +18,3 @@
         url('~assets/fonts/varentgrotesk.woff') format('woff'),
         url('~assets/fonts/varentgrotesk.woff2') format('woff2');
 }
-
-
-
-@font-face {
-    font-display: swap;
-    font-family: 'mongo';
-    font-style: normal;
-    font-weight: normal;
-    src: url('~assets/fonts/Mango-Black.woff') format('woff');
-}
-
