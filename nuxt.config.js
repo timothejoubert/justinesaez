@@ -1,3 +1,5 @@
+import fs from 'fs'
+import path from 'path'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 import * as SITE_INFO from './content/site/info.json'
 import { version } from './package.json'
@@ -52,7 +54,7 @@ export default {
 
     // The content property: https://content.nuxtjs.org/configuration
     content: {
-        dir: 'content',
+        dir: './content',
     },
 
     // Global CSS: https://go.nuxtjs.dev/config-css
@@ -88,18 +90,16 @@ export default {
         // '@nuxtjs/sitemap',
         '@nuxt/image',
         // https://cloudinary.nuxtjs.org/setup
-        '@nuxtjs/cloudinary',
+        // '@nuxtjs/cloudinary',
     ],
 
-    // image provider
-    // don't work with storybook ?
-    // With strapi provider: https://image.nuxtjs.org/providers/strapi
-    cloudinary: {
-        cloudName: process.env.CLOUDINARY_NAME,
-        apiKey: process.env.CLOUDINARY_KEY,
-        apiSecret: process.env.CLOUDINARY_SECRET,
-        useComponent: true,
-    },
+    // image provider - don't work with storybook ?
+    // cloudinary: {
+    //     cloudName: process.env.CLOUDINARY_NAME,
+    //     apiKey: process.env.CLOUDINARY_KEY,
+    //     apiSecret: process.env.CLOUDINARY_SECRET,
+    //     useComponent: true,
+    // },
 
     // https://fr.nuxtjs.org/docs/2.x/configuration-glossary/configuration-runtime-config/
     publicRuntimeConfig: {

@@ -3,6 +3,12 @@ import VSplitWord from '~/components/atoms/VSplitWord/VSplitWord.vue'
 export default {
     title: 'Utils/SplitWord',
     component: VSplitWord,
+    argTypes: {
+        split: {
+            options: ['letter', 'word', 'line'],
+            control: 'check',
+        },
+    },
     args: {
         enabled: true,
         content: 'Timothé',

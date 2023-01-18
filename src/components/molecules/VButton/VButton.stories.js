@@ -4,6 +4,7 @@ import IconArrowRight from '~/assets/images/icons/arrow-right.svg?inline'
 import IconChevronRight from '~/assets/images/icons/chevron-right.svg?inline'
 
 export default {
+    title: 'Molecules/Button',
     component: VButton,
     argTypes: {
         theme: {
