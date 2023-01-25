@@ -15,22 +15,19 @@ export default Vue.extend({
         return createElement(
             'div',
             { ...context.data, class: [context.data.staticClass, context.data.class, context.$style.root, 'text-h3'] },
-            label?.toString()
+            [context.slots()?.default?.[0]] || label?.toString()
         )
     },
 })
 </script>
 
-
 <style lang="scss" module>
 .root {
     display: inline-block;
+    min-width: rem(220);
     padding: rem(14) rem(50);
     background-color: var(--color-main-soft);
     border-radius: rem(75);
-    min-width: rem(220);
     color: var(--color-main);
 }
 </style>
-
-

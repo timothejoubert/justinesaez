@@ -8,15 +8,23 @@ export default {
             options: ['text-h1', 'text-h2', 'text-h3', 'text-h4'],
             type: 'select',
         },
+        tag: {
+            options: ['div', 'v-pill'],
+            type: 'select',
+        },
     },
     args: {
-        content: 'Hitera',
+        content: 'un exemple de texte',
+        tag: 'div',
     },
 }
 
 const Template = (_args, { argTypes }) => ({
     props: Object.keys(argTypes),
-    template: `<v-marquee :class="fontSize" v-bind="$props" />`,
+    template: `
+        <v-marquee :class="fontSize" v-bind="$props">
+          <component :is="tag">{{ content }}</component>
+        </v-marquee>`,
 })
 
 export const Default = Template.bind({})

@@ -7,11 +7,8 @@ export default {
     argTypes: {
         label: {
             options: tags.map((tag) => tag),
-            control: 'select',
+            control: { type: 'select' },
         },
-    },
-    args: {
-        label: 'un tag',
     },
 }
 
@@ -21,8 +18,21 @@ const Template = (_args, { argTypes }) => ({
 })
 
 export const Default = Template.bind({})
+Default.args = {
+    label: 'un tag',
+}
 
 export const Long = Template.bind({})
 Long.args = {
     label: 'Couverture d’album & de magazine',
+}
+
+const TemplateSlot = (_args, { argTypes }) => ({
+    props: Object.keys(argTypes),
+    template: '<v-pill>{{label}}</v-pill>',
+})
+
+export const SlotContent = TemplateSlot.bind({})
+SlotContent.args = {
+    label: 'slot content',
 }

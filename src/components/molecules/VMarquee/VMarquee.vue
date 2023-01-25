@@ -1,33 +1,14 @@
 <template>
-
-
     <div v-if="content" :class="[$style.root, !active && $style['root--hidden']]" :data-content="content">
-
-
-        <slot :class="$style.content">
-
-
-            <div ref="title" :class="$style.content">{{ content }}</div>
-
-
-        </slot>
-
-
-        <span v-for="element in missingElementsToAdd" :key="element" aria-hidden="true" :class="$style.content">
-             {{ content }}
-        </span>
-
-
+        <slot :class="$style.content" />
+        <slot v-for="element in missingElementsToAdd" aria-hidden="true" :class="$style.content" />
     </div>
-
-
 </template>
-
 
 <script lang="ts">
 import Vue from 'vue'
-import { gsap, timeline } from 'gsap'
-import { mapRange } from '~/utils/utils'
+import { gsap } from 'gsap'
+// import { mapRange } from '~/utils/utils'
 
 export default Vue.extend({
     name: 'VMarquee',
@@ -38,10 +19,11 @@ export default Vue.extend({
     },
     data() {
         return {
+            element: null as null | HTMLElement,
             offsetTranslateDistance: 0,
             missingElementsToAdd: 0,
             timeline: null as null | GSAPTween,
-            titleObserver: null as ResizeObserver | null,
+            contentObserver: null as ResizeObserver | null,
         }
     },
     watch: {
@@ -52,36 +34,32 @@ export default Vue.extend({
         },
     },
     mounted() {
-        window.addEventListener('wheel', this.onWheel)
-        this.initTitleObserver()
+        const el = this.$slots?.default?.[0]?.elm
+        if (!el) return
+
+        // window.addEventListener('wheel', this.onWheel)
+        this.element = el as HTMLElement
+        this.initContentObserver()
         if (this.active) this.initAnimation()
         else this.pauseAnimation()
     },
     beforeDestroy() {
-        window.removeEventListener('wheel', this.onWheel)
-        this.titleObserver?.disconnect()
+        // window.removeEventListener('wheel', this.onWheel)
+        this.contentObserver?.disconnect()
     },
     methods: {
-        onWheel(event: WheelEvent) {
-            const newValue = mapRange(Math.abs(event.deltaY), 0, 100, -0.001, 0.001)
-            const newProgress = this.timeline.progress() + newValue
-
-            console.log(newValue, newProgress)
-
-            this.timeline.progress(newProgress)
+        // https://codepen.io/akapowl/pen/yLMaxPN/56a209d1e67e6e2fd56fe10d0b5fdafe?editors=0010
+        onWheel(_event: WheelEvent) {},
+        initContentObserver() {
+            this.contentObserver = new ResizeObserver((entries: ResizeObserverEntry[]) =>
+                this.onContentResized(entries)
+            )
+            this.contentObserver.observe(this.element as HTMLElement)
         },
-        initTitleObserver() {
-            this.titleObserver = new ResizeObserver((entries: ResizeObserverEntry[]) => this.onTitleResize(entries))
-            console.log(this.$refs.title, this.$slots)
-            if (this.$refs.title) this.titleObserver.observe(this.$refs.title as HTMLElement)
-            else if (this.$slots?.default?.[0]) {
-                this.titleObserver.observe(this.$slots.default[0].elm as HTMLElement)
-            }
-        },
-        onTitleResize(entries: ResizeObserverEntry[]) {
+        onContentResized(entries: ResizeObserverEntry[]) {
             if (entries[0].contentBoxSize) {
                 this.updateTranslateDistance(entries[0])
-                this.updateDuplicateTitle()
+                this.updateDuplicateContent()
                 if (this.timeline) this.resetAnimation()
             }
         },
@@ -89,8 +67,9 @@ export default Vue.extend({
             this.offsetTranslateDistance =
                 entry.contentRect.width + parseInt(window.getComputedStyle(entry.target).marginRight) || 0
         },
-        updateDuplicateTitle() {
-            this.missingElementsToAdd = Math.max(Math.ceil(window.innerWidth / this.offsetTranslateDistance) - 2, 0)
+        updateDuplicateContent() {
+            const offsetWidth = Math.ceil(window.innerWidth / this.offsetTranslateDistance)
+            this.missingElementsToAdd = Math.max(offsetWidth, 1)
         },
         pauseAnimation() {
             gsap.to(this.$el, { opacity: 0, duration: 0.2 }).then(() => this.timeline?.pause())
@@ -112,7 +91,7 @@ export default Vue.extend({
                 this.$el,
                 { x: 0 },
                 {
-                    repeat: 1,
+                    repeat: -1,
                     x: '-' + this.offsetTranslateDistance,
                     ease: 'none',
                     duration,
@@ -123,7 +102,6 @@ export default Vue.extend({
 })
 </script>
 
-
 <style lang="scss" module>
 .root {
     display: flex;
@@ -131,15 +109,6 @@ export default Vue.extend({
     min-width: 100%;
     grid-column: 1 / -1;
     white-space: nowrap;
-
-    &::before,
-    &::after {
-        position: relative;
-        display: inline;
-        order: 2;
-        margin-right: rem(30);
-        content: attr(data-content);
-    }
 }
 
 .content {
@@ -148,5 +117,3 @@ export default Vue.extend({
     margin-right: rem(30);
 }
 </style>
-
-

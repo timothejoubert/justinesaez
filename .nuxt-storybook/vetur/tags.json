@@ -17,11 +17,11 @@
   "VSplitWord": {
     "description": "Auto imported from components/atoms/VSplitWord/VSplitWord.vue"
   },
-  "VButton": {
-    "description": "Auto imported from components/molecules/VButton/VButton.vue"
-  },
   "VAboutTags": {
     "description": "Auto imported from components/molecules/VAboutTags/VAboutTags.vue"
+  },
+  "VButton": {
+    "description": "Auto imported from components/molecules/VButton/VButton.vue"
   },
   "VMarquee": {
     "description": "Auto imported from components/molecules/VMarquee/VMarquee.vue"
