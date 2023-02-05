@@ -1,4 +1,8 @@
-type Theme = 'light' | 'dark'
+type Theme = 'light' | 'dark' | 'orange'
+
+interface CommonContent {
+    menu: PageData[]
+}
 
 interface AppContent {
     title: string
@@ -13,8 +17,11 @@ interface SocialNetworkItem {
 }
 
 interface PageData {
-    '@type': string
-    title?: string
+    '@id'?: string
+    '@type'?: string
+    title: string
+    slug: string
+    relativePath: string
     metaDescription?: string
     shareImg?: string
 }

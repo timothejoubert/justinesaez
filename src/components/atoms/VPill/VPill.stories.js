@@ -1,6 +1,5 @@
 import VPill from '~/components/atoms/VPill/VPill.vue'
 import { tags } from '~/mock-data/tags'
-import { getThemes } from '~/utils/storybook/get-theme'
 
 export default {
     title: 'Atoms/Pill',
@@ -13,8 +12,6 @@ export default {
         },
     },
 }
-
-console.log(getThemes())
 
 const Template = (_args, { argTypes }) => ({
     props: Object.keys(argTypes),

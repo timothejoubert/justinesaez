@@ -2,6 +2,7 @@ import { RootState } from '~/types/store'
 
 export default (): RootState => ({
     // Data
+    commonContent: null,
     projectsData: [],
     aboutData: null,
     // Loading

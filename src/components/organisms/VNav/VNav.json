@@ -1,0 +1,34 @@
+{
+    "children": [
+        {
+            "children": [],
+            "childrenCount": 0,
+            "item": {
+                "@id": "/api/documentation_blocks/110",
+                "@type": "DocumentationBlock",
+                "displayInToc": true,
+                "title": "Child node title",
+                "content": "Child node content",
+                "publishedAt": "2023-01-26T17:19:15+01:00",
+                "noIndex": false,
+                "slug": "fiche-collection-2-documentationblock-63d3da4e9e6b9"
+            },
+            "level": 2,
+            "maxLevel": 5,
+            "metadata": []
+        }
+    ],
+    "childrenCount": 0,
+    "item": {
+        "@id": "/api/documentation_blocks/110",
+        "@type": "DocumentationBlock",
+        "displayInToc": true,
+        "title": "Node title",
+        "content": "Node content",
+        "noIndex": false,
+        "slug": "fiche-collection-2-documentationblock-63d3da4e9e6b9"
+    },
+    "level": 2,
+    "maxLevel": 5,
+    "metadata": []
+},
