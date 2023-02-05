@@ -1,5 +1,3 @@
-import fs from 'fs'
-import path from 'path'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
 import * as SITE_INFO from './content/site/info.json'
 import { version } from './package.json'
@@ -123,6 +121,14 @@ export default {
         port: 4000,
         stories: ['~/components/**/*.stories.js', '~/stories/**/*.stories.js'],
         parameters: {
+            layout: 'fullScreen',
+            backgrounds: {
+                default: 'light',
+                values: [
+                    { name: 'dark', value: '#000' },
+                    { name: 'ligth', value: '#fff' },
+                ],
+            },
             viewport: {
                 viewports: {
                     iPhoneSE: {

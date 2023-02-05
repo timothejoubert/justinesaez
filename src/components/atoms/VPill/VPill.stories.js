@@ -1,5 +1,6 @@
 import VPill from '~/components/atoms/VPill/VPill.vue'
 import { tags } from '~/mock-data/tags'
+import { getThemes } from '~/utils/storybook/get-theme'
 
 export default {
     title: 'Atoms/Pill',
@@ -8,9 +9,12 @@ export default {
         label: {
             options: tags.map((tag) => tag),
             control: { type: 'select' },
+            default: tags[0],
         },
     },
 }
+
+console.log(getThemes())
 
 const Template = (_args, { argTypes }) => ({
     props: Object.keys(argTypes),
@@ -19,7 +23,7 @@ const Template = (_args, { argTypes }) => ({
 
 export const Default = Template.bind({})
 Default.args = {
-    label: 'un tag',
+    label: 'Un tag',
 }
 
 export const Long = Template.bind({})
@@ -29,7 +33,7 @@ Long.args = {
 
 const TemplateSlot = (_args, { argTypes }) => ({
     props: Object.keys(argTypes),
-    template: '<v-pill>{{label}}</v-pill>',
+    template: '<v-pill>{{ label }}</v-pill>',
 })
 
 export const SlotContent = TemplateSlot.bind({})

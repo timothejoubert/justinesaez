@@ -1,3 +1,5 @@
+type Theme = 'light' | 'dark'
+
 interface AppContent {
     title: string
     url: string

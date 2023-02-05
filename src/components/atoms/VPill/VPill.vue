@@ -8,14 +8,14 @@ export default Vue.extend({
     props: {
         label: String as PropType<String>,
     },
-    render(createElement, context): VNode | VNode[] {
-        const { label } = context.props
+    render(createElement, context): VNode {
+        const label = context.props?.label?.toString() || context.slots()?.default?.[0]
         if (!label) createElement('')
 
         return createElement(
             'div',
             { ...context.data, class: [context.data.staticClass, context.data.class, context.$style.root, 'text-h3'] },
-            [context.slots()?.default?.[0]] || label?.toString()
+            [label]
         )
     },
 })
