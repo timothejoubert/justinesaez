@@ -1,4 +1,5 @@
-# Nuxt Notion Todo
+# justinesaez
+Portfolio de Justine Saez - Designer illustratrice
 
 ## Build Setup
 
