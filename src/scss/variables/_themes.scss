@@ -1,15 +1,18 @@
 $themes: (
     light: (
-        default: #DBE6EC,
-        on-default: #131212,
+        default: color(light),
+        button-background-hovered: rgba(color(light), 0.9),
+        on-default: color(dark),
     ),
     orange: (
-        default: #ec8f42,
-        on-default: #DBE6EC,
+        default: color(orange),
+        button-background-hovered: rgba(color(orange), 0.9),
+        on-default: color(light),
     ),
     dark: (
-        default: #131212,
-        on-default: #DBE6EC,
+        default: color(dark),
+        button-background-hovered: rgba(color(dark), 0.9),
+        on-default: color(light),
     )
 );
 

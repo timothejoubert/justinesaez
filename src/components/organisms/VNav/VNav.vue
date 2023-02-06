@@ -1,57 +1,80 @@
 <template>
-    <nav :class="rootClass" @mouseleave="onMouseLeave">
-        <div ref="slider" :class="$style.slider"></div>
-        <ul v-if="pages && pages.length" :class="$style.list">
-            <li
-                v-for="link in pages"
-                :key="link['@id']"
-                ref="link"
-                :class="$style.item"
-                @mouseenter="onMouseEnter(link.slug)"
-            >
-                <nuxt-link :to="link.relativePath">{{ link.title }}</nuxt-link>
-            </li>
-        </ul>
+    <nav :class="rootClass" @click="isMenuOpen = !isMenuOpen" @mouseleave="onMouseLeave" @mouseenter="onMouseEnter">
+        <transition :name="$style.menu" @enter="initIndicatorPosition">
+            <div v-show="isMenuOpen" :class="$style.menu">
+                <div ref="slider" :class="$style.slider"></div>
+                <ul v-if="pages && pages.length" :class="$style.list">
+                    <li
+                        v-for="link in pages"
+                        :key="link['@id']"
+                        ref="link"
+                        :class="$style.item"
+                        @mouseenter="onLinkMouseEnter(link.slug)"
+                    >
+                        <nuxt-link :to="link.relativePath">{{ link.title }}</nuxt-link>
+                    </li>
+                </ul>
+            </div>
+        </transition>
+
+        <v-button :class="$style.button" theme="orange" filled label="menu">
+            <template #icon>
+                <div :class="$style.burger"></div>
+            </template>
+        </v-button>
     </nav>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
 import { gsap } from 'gsap'
+import mixins from 'vue-typed-mixins'
+import ThemeProvider from '~/mixins/ThemeProvider'
+import { getCSSVarFromTheme } from '~/utils/get-theme'
+import { PageData } from '~/types/app'
 
-export default Vue.extend({
+export default mixins(ThemeProvider).extend({
     name: 'VNav',
     data() {
         return {
-            selectedIndex: 0,
+            isMenuOpen: false,
+            selectedIndex: null as null | number,
             indicatorTimeline: null as null | GSAPTimeline,
+            timeoutId: -1,
         }
     },
     computed: {
         rootClass(): (undefined | false | string)[] {
-            return [this.$style.root]
+            return [
+                this.$style.root,
+                this.isMenuOpen && this.$style['root--open'],
+                typeof this.theme === 'string' && this.$style[`root--theme-${this.theme}`],
+            ]
         },
         pages(): PageData[] | undefined {
             return this.$store.state.commonContent?.menu
         },
     },
     watch: {
-        $route() {
-            this.updateSelectedIndexByRoute()
-        },
         selectedIndex(newIndex: number, oldIndex: number) {
             this.updateIndicatorPosition(newIndex, oldIndex)
         },
     },
-    mounted() {
-        this.updateSelectedIndexByRoute()
-        this.updateIndicatorPosition(this.selectedIndex)
-    },
     methods: {
         onMouseLeave() {
-            this.updateSelectedIndexByRoute()
+            this.timeoutId = window.setTimeout(this.closeMenu, 100)
         },
-        onMouseEnter(slug: string) {
+        onMouseEnter() {
+            this.openMenu()
+        },
+        closeMenu() {
+            this.isMenuOpen = false
+        },
+        openMenu() {
+            window.clearTimeout(this.timeoutId)
+            this.timeoutId = -1
+            this.isMenuOpen = true
+        },
+        onLinkMouseEnter(slug: string) {
             this.updateSelectedIndexBySlug(slug)
         },
         updateSelectedIndexByRoute() {
@@ -59,6 +82,10 @@ export default Vue.extend({
         },
         updateSelectedIndexBySlug(selectedSlug: string) {
             this.selectedIndex = Math.max(this.pages?.findIndex((page) => page.slug === selectedSlug) || 0, 0)
+        },
+        initIndicatorPosition() {
+            this.updateSelectedIndexByRoute()
+            setTimeout(() => this.updateIndicatorPosition(this.selectedIndex || 0), 200)
         },
         updateIndicatorPosition(newIndex: number, oldIndex?: number) {
             const targets = this.$refs.link as HTMLElement[]
@@ -68,46 +95,147 @@ export default Vue.extend({
             if (!selectedTarget || !slider) return
 
             this.indicatorTimeline = gsap.timeline({ defaults: { duration: 0.4 } })
-            this.indicatorTimeline.to(slider, { x: selectedTarget.offsetLeft, width: selectedTarget.offsetWidth })
+            this.indicatorTimeline.to(slider, {
+                x: selectedTarget.offsetLeft - 5,
+                width: selectedTarget.offsetWidth + 2,
+            })
 
-            if (typeof oldIndex === 'number' && targets?.[oldIndex]) this.indicatorTimeline.to(targets[oldIndex], { color: 'red', ease: 'none' }, 0)
-            this.indicatorTimeline.to(selectedTarget, { color: '#fff', ease: 'none' }, 0)
+            this.resetLinkColor(targets, selectedTarget, oldIndex)
+        },
+        resetLinkColor(targets: HTMLElement[], selectedTarget: HTMLElement, oldIndex?: number) {
+            const theme = getCSSVarFromTheme(this.theme)
+
+            gsap.to(selectedTarget, 0.3, { color: theme['--theme-on-default'], ease: 'none' })
+
+            if (oldIndex) {
+                gsap.to(targets[oldIndex], 0.3, { color: theme['--theme-default'], ease: 'none' })
+            } else {
+                const notSelectedLinks = targets.filter((_, i) => i !== this.selectedIndex)
+                gsap.to(notSelectedLinks, 0.3, { color: theme['--theme-default'], ease: 'none' })
+            }
         },
     },
 })
 </script>
 
 <style lang="scss" module>
+$height: rem(34);
+
 .root {
+    @include theme-variants;
+
     position: relative;
+    display: flex;
+    width: min-content;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.menu {
+    position: absolute;
+    top: 0;
+    margin-bottom: rem(12);
+    transform: translateY(calc(-100% - 8px));
 }
 
 .list {
     display: inline-flex;
     padding: rem(4);
-    border: 2px solid red;
-    border-radius: rem(30);
+    border: 2px solid var(--theme-default);
+    border-radius: $height;
+
+    &::before {
+        position: absolute;
+        background-color: color(background);
+        border-radius: $height;
+        content: '';
+        inset: rem(4);
+    }
 }
 
 .item {
+    position: relative;
+    z-index: 2;
     display: flex;
     min-width: rem(68);
-    min-height: rem(34);
+    min-height: $height;
     align-items: center;
     justify-content: center;
-    padding-inline: rem(14);
+    color: var(--theme-on-default);
+    padding-inline: rem(22);
+    white-space: nowrap;
 }
 
 .slider {
     position: absolute;
-    z-index: -1;
-    top: rem(4);
-    left: 0;
-    bottom: rem(4);
-    background: red;
-    border-radius: rem(30);
+    z-index: 1;
+    background: var(--theme-default);
+    border-radius: $height;
+    inset: rem(4);
     pointer-events: none;
+    transform-origin: center;
     user-select: none;
-    color: red;
+}
+
+.button {
+    text-transform: uppercase;
+}
+
+.burger {
+    position: relative;
+    display: flex;
+    width: rem(12);
+    height: 1px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--theme-on-default);
+    transition: background-color 0.2s;
+
+    &::after,
+    &::before {
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: var(--theme-on-default);
+        content: '';
+        transform-origin: center;
+        transition: transform 0.3s;
+    }
+
+    &::before {
+        width: 80%;
+        transform: translateY(4px);
+    }
+
+    &::after {
+        transform: translateY(-4px);
+    }
+
+    .root--open & {
+        background-color: transparent;
+
+        &::before {
+            width: 100%;
+            transform: rotate(-45deg);
+        }
+        &::after {
+            transform: rotate(45deg);
+        }
+    }
+}
+
+.menu:global(#{'-enter-active'}),
+.menu:global(#{'-leave-active'}) {
+    transition: 0.4s;
+    transition-property: opacity, transform;
+}
+
+.menu:global(#{'-enter'}),
+.menu:global(#{'-leave-to'}) {
+    opacity: 0;
+    transform: translateY(-150%);
 }
 </style>

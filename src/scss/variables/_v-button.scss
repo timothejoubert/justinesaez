@@ -15,10 +15,10 @@ $v-button: (
 
 $v-button-rounded: (
     s: (
-        border-radius: rem(8)
+        border-radius: math.div(32px, 2),
     ),
     m: (
-        border-radius: rem(8)
+        border-radius: math.div(52px, 2),
     ),
 );
 
@@ -30,27 +30,28 @@ $v-button-inner: (
         padding: 0 12px,
     ),
     m: (
-        min-width: 52px,
-        height: 52px,
-        padding: 0 20px,
+        min-width: 54px,
+        height: 46px,
+        padding: 0 26px,
     ),
 );
+
 $v-button-inner-icon-last: (
     s: (
         padding: 0 8px 0 12px,
     ),
     m: (
-        padding: 0 16px 0 20px,
+        padding: 0 26px 0 28px,
     ),
 );
 
 // icon
 $v-button-icon: (
     s: (
-        margin: 0 4px,
+        margin: 0 8px,
     ),
     m: (
-        margin: 0 8px,
+        margin: 0 14px,
     ),
 );
 

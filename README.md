@@ -4,6 +4,8 @@ Portfolio de Justine Saez - Designer illustratrice
 ### TODO
 - Remove .nuxt-storybook folder in git 
 - Clean VSplitWord or remove it and use Gsap splitWord
+- add font 'Roc Grotesk'
+- VNav => check responsive
 
 ## Build Setup
 

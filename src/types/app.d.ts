@@ -1,22 +1,22 @@
-type Theme = 'light' | 'dark' | 'orange'
+export type Theme = 'light' | 'dark' | 'orange'
 
-interface CommonContent {
+export interface CommonContent {
     menu: PageData[]
 }
 
-interface AppContent {
+export interface AppContent {
     title: string
     url: string
     shareImg: string
 }
 
-interface SocialNetworkItem {
+export interface SocialNetworkItem {
     url: string
     icon: string
     title: string
 }
 
-interface PageData {
+export interface PageData {
     '@id'?: string
     '@type'?: string
     title: string

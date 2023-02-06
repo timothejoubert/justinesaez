@@ -1,4 +1,5 @@
 import themes from '~/scss/export/_themes.scss'
+import { Theme } from '~/types/app'
 
 interface ThemeContent {
     [Key: string]: string

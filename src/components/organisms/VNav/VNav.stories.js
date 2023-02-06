@@ -5,6 +5,9 @@ import MutationType from '~/constants/mutation-type'
 export default {
     title: 'Organisms/VNav',
     component: VNav,
+    parameters: {
+        layout: 'centered',
+    },
 }
 
 const Template = (_args, { argTypes }) => ({
@@ -22,5 +25,5 @@ Default.args = {
 
 export const longTitle = Template.bind({})
 longTitle.args = {
-    menu: [...MENU, { title: 'un titre de page long', slug: 'un-titre-long', relativePath: '/url' }]
+    menu: [...MENU, { title: 'un titre de page long', slug: 'un-titre-long', relativePath: '/url' }],
 }
