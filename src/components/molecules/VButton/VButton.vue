@@ -20,9 +20,9 @@
 <script lang="ts">
 import Vue from 'vue'
 import { PropType } from 'vue/types/options'
+import { Theme } from '~/types/app'
 
-export type Theme = 'dark' | 'light'
-type Size = 's' | 'm'
+type Size = 's' | 'm' | 'l'
 type Color = 'primary' | 'secondary'
 export type Variant = 'navigation'
 
@@ -90,7 +90,7 @@ export default Vue.extend({
             } else if (typeof this.href === 'string' && isRelativePath(this.href)) {
                 props.to = this.href
             } else if (this.href) {
-                props.href = this.href
+                props.href = this.isEmail(this.href) ? 'mailto:' + this.href : this.href
                 props.target = '_blank'
             }
 
@@ -100,6 +100,10 @@ export default Vue.extend({
     methods: {
         onClick(event: MouseEvent) {
             this.$emit('click', event)
+        },
+        isEmail(url: string): boolean {
+            const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+            return !!url.match(emailRegex)
         },
     },
 })
@@ -115,7 +119,6 @@ export default Vue.extend({
     display: inline-block;
     border: none;
     color: inherit;
-    font-weight: bold;
     text-decoration: none;
     transition: background-color 0.3s;
 
@@ -262,8 +265,6 @@ export default Vue.extend({
 
 .label {
     @include v-button-default-css-vars($v-button-label, 'label');
-
-    font-weight: 450;
 
     .root--outlined.root--icon-last.root--has-icon & {
         padding-right: rem(8);

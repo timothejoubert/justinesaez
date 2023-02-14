@@ -18,3 +18,26 @@
         url('~assets/fonts/varentgrotesk.woff') format('woff'),
         url('~assets/fonts/varentgrotesk.woff2') format('woff2');
 }
+
+@font-face {
+    font-display: swap;
+    font-family: 'kostic';
+    font-weight: 500;
+    src: url('~assets/fonts/kostic-grotesk-medium.woff2') format('woff2');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'kostic';
+    font-weight: 400;
+    src: url('~assets/fonts/kostic-grotesk-regular.woff2') format('woff2');
+}
+
+
+@font-face {
+    font-display: swap;
+    font-family: 'dida';
+    font-weight: 400;
+    src: url('~assets/fonts/Dida-Regular.ttf') format('ttf'),
+         url('~assets/fonts/Dida-Regular.woff2') format('woff2');
+}

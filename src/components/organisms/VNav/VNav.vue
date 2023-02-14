@@ -1,5 +1,5 @@
 <template>
-    <nav :class="rootClass" @click="isMenuOpen = !isMenuOpen" @mouseleave="onMouseLeave" @mouseenter="onMouseEnter">
+    <nav :class="rootClass" @mouseleave="onMouseLeave" @mouseenter="onMouseEnter">
         <transition :name="$style.menu" @enter="initIndicatorPosition">
             <div v-show="isMenuOpen" :class="$style.menu">
                 <div ref="slider" :class="$style.slider"></div>
@@ -9,7 +9,7 @@
                         :key="link['@id']"
                         ref="link"
                         :class="$style.item"
-                        @mouseenter="onLinkMouseEnter(link.slug)"
+                        @mouseenter="onLinkMouseEnter(link.relativePath)"
                     >
                         <nuxt-link :to="link.relativePath">{{ link.title }}</nuxt-link>
                     </li>
@@ -17,7 +17,7 @@
             </div>
         </transition>
 
-        <v-button :class="$style.button" theme="orange" filled label="menu">
+        <v-button :class="$style.button" theme="orange" filled label="menu" @click="isMenuOpen = !isMenuOpen">
             <template #icon>
                 <div :class="$style.burger"></div>
             </template>
@@ -31,9 +31,14 @@ import mixins from 'vue-typed-mixins'
 import ThemeProvider from '~/mixins/ThemeProvider'
 import { getCSSVarFromTheme } from '~/utils/get-theme'
 import { PageData } from '~/types/app'
+import { getMenu } from '~/utils/parse-api-data'
+import { isListingPage } from '~/utils/entity'
 
 export default mixins(ThemeProvider).extend({
     name: 'VNav',
+    props: {
+        value: Boolean,
+    },
     data() {
         return {
             isMenuOpen: false,
@@ -42,6 +47,7 @@ export default mixins(ThemeProvider).extend({
             timeoutId: -1,
         }
     },
+
     computed: {
         rootClass(): (undefined | false | string)[] {
             return [
@@ -50,13 +56,17 @@ export default mixins(ThemeProvider).extend({
                 typeof this.theme === 'string' && this.$style[`root--theme-${this.theme}`],
             ]
         },
-        pages(): PageData[] | undefined {
-            return this.$store.state.commonContent?.menu
+        pages(): PageData[] {
+            return getMenu() as PageData[]
         },
     },
     watch: {
         selectedIndex(newIndex: number, oldIndex: number) {
             this.updateIndicatorPosition(newIndex, oldIndex)
+        },
+        value(isOpen) {
+            if (isOpen) this.openMenu()
+            else this.closeMenu()
         },
     },
     methods: {
@@ -74,14 +84,19 @@ export default mixins(ThemeProvider).extend({
             this.timeoutId = -1
             this.isMenuOpen = true
         },
-        onLinkMouseEnter(slug: string) {
-            this.updateSelectedIndexBySlug(slug)
+        onLinkMouseEnter(relativePath: string) {
+            this.updateSelectedIndexByPath(relativePath)
         },
         updateSelectedIndexByRoute() {
-            this.updateSelectedIndexBySlug(this.$route.path)
+            this.updateSelectedIndexByPath(this.$route.path)
         },
-        updateSelectedIndexBySlug(selectedSlug: string) {
-            this.selectedIndex = Math.max(this.pages?.findIndex((page) => page.slug === selectedSlug) || 0, 0)
+        updateSelectedIndexByPath(path: string) {
+            this.selectedIndex = Math.max(
+                this.pages?.findIndex((page) => {
+                    return path === page.relativePath || (isListingPage(page) && path.includes(page.relativePath))
+                }),
+                0
+            )
         },
         initIndicatorPosition() {
             this.updateSelectedIndexByRoute()
@@ -103,7 +118,7 @@ export default mixins(ThemeProvider).extend({
             this.resetLinkColor(targets, selectedTarget, oldIndex)
         },
         resetLinkColor(targets: HTMLElement[], selectedTarget: HTMLElement, oldIndex?: number) {
-            const theme = getCSSVarFromTheme(this.theme)
+            const theme = getCSSVarFromTheme(this.theme || 'orange')
 
             gsap.to(selectedTarget, 0.3, { color: theme['--theme-on-default'], ease: 'none' })
 

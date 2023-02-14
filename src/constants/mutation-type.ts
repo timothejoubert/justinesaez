@@ -1,12 +1,15 @@
 enum MutationType {
-    WINDOW_WIDTH = 'windowWidth',
-    WINDOW_HEIGHT = 'windowHeight',
-    COMMON_CONTENT = 'commonContent',
-    PROJECTS_DATA = 'projectsData',
-    ABOUT_DATA = 'aboutData',
+    // data
+    HEAD_DATA = 'headData',
+    PROJECTS = 'projects',
+    ABOUT = 'about',
+    // loading
     SPLASH_SCREEN_FINISH = 'splashScreenFinish',
     ANIMATION_ENTER = 'animationEnter',
     ALREADY_VISITED = 'alreadyVisited',
+    // Global
+    WINDOW_WIDTH = 'windowWidth',
+    WINDOW_HEIGHT = 'windowHeight',
     ERROR_PAGE = 'errorPage',
 }
 

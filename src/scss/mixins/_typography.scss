@@ -1,14 +1,12 @@
 @use 'sass:math';
 
 @mixin text-h1 {
-    font-family: $noi;
     font-size: rem(141);
     font-weight: 900;
     line-height: math.div(108, 120);
 }
 
 @mixin text-h2 {
-    font-family: $noi;
     font-size: rem(86);
     font-weight: 900;
     line-height: 1;
@@ -21,8 +19,8 @@
 }
 
 @mixin text-h4 {
-    font-size: 24px;
-    line-height: 1;
+    font-size: rem(28);
+    line-height: 1.2;
 }
 
 @mixin text-h5 {
@@ -44,7 +42,6 @@
 }
 
 @mixin over-title-l {
-    font-family: $noi;
     font-size: 21px;
     font-weight: 700;
     line-height: 1;
@@ -52,7 +49,6 @@
 }
 
 @mixin over-title-m {
-    font-family: $noi;
     font-size: 15px;
     font-weight: 900;
     line-height: 1;
@@ -60,14 +56,12 @@
 }
 
 @mixin over-title-s {
-    font-family: $noi;
     font-size: 13px;
     font-weight: 300;
     line-height: 1;
 }
 
 @mixin over-title-xs {
-    font-family: $noi;
     font-size: 14px;
     font-weight: 500;
     line-height: 1;
@@ -75,7 +69,6 @@
 }
 
 @mixin text-body-l {
-    font-family: $noi;
     font-size: 18px;
     font-weight: 400;
     line-height: 2.1;
@@ -87,46 +80,19 @@
 }
 
 @mixin text-body-m {
-    font-family: $noi;
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 13px;
+    font-weight: 400;
     line-height: 1;
 }
 
 @mixin text-body-s {
-    font-family: $noi;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 300;
     line-height: 1.4;
 }
 
 @mixin text-body-xs {
-    font-family: $noi;
     font-size: 13px;
     font-weight: 400;
     line-height: 1.45;
-}
-
-@mixin text-body-xxs {
-    font-family: $noi;
-    font-size: 11px;
-    font-weight: 400;
-    line-height: 1.45;
-}
-
-
-@mixin button-s {
-    font-family: $noi;
-    font-size: 13px;
-    font-weight: 800;
-    line-height: 1;
-    text-transform: uppercase;
-}
-
-@mixin button-m {
-    font-family: $noi;
-    font-size: 13px;
-    font-weight: 800;
-    line-height: 1;
-    text-transform: uppercase;
 }

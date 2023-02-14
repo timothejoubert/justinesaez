@@ -14,10 +14,11 @@ export default Vue.extend({
     props: {
         label: [String, Boolean],
         href: String,
+        to: String,
         document: Object as PropType<LinkDocument>,
     },
     render(createElement, context): VNode | VNode[] {
-        const src = context.props.href
+        const src = context.props.href || context.props.to
         const document = context.props.document
         const label: string | undefined | boolean = context.props.label
 

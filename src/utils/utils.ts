@@ -7,7 +7,7 @@ export const slugify = (text: string | null | undefined): string => {
               .toLowerCase() // Convert the string to lowercase letters
               .trim() // Remove whitespace from both sides of a string (optional)
               .replace(/\s+/g, '-') // Replace spaces with -
-        : 'no name found'
+        : 'no-found-name'
     // .replace(/[^\w\-]+/g, '') // Remove all non-word chars
     // .replace(/\-\-+/g, '-') // Replace multiple - with single -
 }
@@ -49,4 +49,21 @@ export const setCssProp = (propName: string, value: string) => {
 
 export const removeCssProp = (propName: string) => {
     return document.documentElement.style.setProperty(propName, null)
+}
+
+export function uid(): string {
+    const a = new Uint32Array(3)
+    window.crypto.getRandomValues(a)
+    return (
+        performance.now().toString(36) +
+        Array.from(a)
+            .map((A) => A.toString(36))
+            .join('')
+    ).replace(/\./g, '')
+}
+
+export const stringDateToYear = (date: string | null): number | null => {
+    if (!date) return null
+    const items = date.split('-')
+    return Number(items[items.length - 1])
 }

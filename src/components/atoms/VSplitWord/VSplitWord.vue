@@ -1,16 +1,17 @@
 <script lang="ts">
 import Vue from 'vue'
 import type { VNode, PropType } from 'vue'
-import { throttle } from 'throttle-debounce'
+import { AnimationState } from '~/components/organisms/VSplashScreen/VSplashScreen.vue'
+// import { throttle } from 'throttle-debounce'
 
 interface SplitWordProps {
     enabled: boolean
     content: string
     defaultHidden: boolean
     breakWord: boolean
-    transitionEndEvent: boolean
     split: SplitItem[]
     numberOfWordInLine: number
+    transitionState: AnimationState
 }
 
 type SplitItem = 'letter' | 'word' | 'line'
@@ -18,39 +19,43 @@ type SplitItem = 'letter' | 'word' | 'line'
 export default Vue.extend({
     name: 'VSplitWord',
     props: {
-        enabled: { type: Boolean, default: true },
         split: {
             type: Array as PropType<SplitItem[]>,
             default: () => ['letter'],
         },
-        breakWord: Boolean,
         numberOfWordInLine: {
             type: Number,
             default: 2,
         },
         content: String,
-        defaultHidden: Boolean,
-        transitionEndEvent: Boolean,
+        enabled: { type: Boolean, default: true },
+        breakWord: { type: Boolean, default: true },
+        defaultHidden: { type: Boolean, default: false },
+        transitionState: String as PropType<AnimationState>,
     },
-    data() {
-        return {
-            triggerEventCount: 0,
-        }
+    watch: {
+        transitionState(state: string) {
+            if (state === 'started' || state === 'revert') this.initTransitionListener()
+        },
     },
-    mounted() {
-        if (this.transitionEndEvent) this.initTransitionEnd()
+    beforeDestroy() {
+        this.removeTransitionListener()
     },
     methods: {
-        initTransitionEnd() {
-            this.triggerEventCount++
+        initTransitionListener() {
             const letters = this.$el.querySelectorAll('.split-letter')
             if (!letters) return
-            letters[letters.length - 1]?.addEventListener('transitionend', this.onTransitionEnd, { once: true })
+
+            letters[letters.length - 1].addEventListener('transitionend', this.onTransitionEnd, { once: true })
+        },
+        removeTransitionListener() {
+            const letters = this.$el.querySelectorAll('.split-letter')
+            if (!letters) return
+
+            letters[letters.length - 1].removeEventListener('transitionend', this.onTransitionEnd)
         },
         onTransitionEnd() {
             this.$emit('transitionend')
-            if (this.triggerEventCount > 1) return
-            window.setTimeout(() => this.initTransitionEnd(), 300)
         },
     },
     render(createElement): VNode {
@@ -77,7 +82,6 @@ export default Vue.extend({
 
         const parsedLetters = (word: string): VNode[] => {
             const letters = word.split('')
-            // console.log('letters:', letters)
             return letters.map((letter: string, index: number) => {
                 indexLetter++
                 return createElement(
@@ -210,7 +214,7 @@ export default Vue.extend({
         transform: translateY(0);
     }
 
-    :global(.load--finish) & {
+    :global(.revert) & {
         transition-delay: calc(20ms * var(--index-letter-total, 1));
         transition-duration: 0.4s;
         transition-timing-function: ease(out-quad);

@@ -1,15 +1,10 @@
 import { NuxtError } from '@nuxt/types'
+import { HeadData } from '~/types/app'
 
 interface RootState {
     // Data
-    commonContent: null | CommonContent
-    projectsData: ProjectContent[] | []
-    aboutData: AboutContent | null
-    // Loading
-    animationEnter: boolean
-    splashScreenFinish: boolean
-    alreadyVisited: boolean
-    // General
+    headData: null | HeadData
+    // Global
     windowWidth: number
     windowHeight: number
     errorPage: NuxtError | null

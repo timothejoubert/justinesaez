@@ -1,5 +1,7 @@
 import VPill from '~/components/atoms/VPill/VPill.vue'
-import { tags } from '~/mock-data/tags'
+import { getProjectTags } from '~/utils/parse-api-data'
+
+const tags = getProjectTags()
 
 export default {
     title: 'Atoms/Pill',

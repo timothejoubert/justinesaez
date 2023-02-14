@@ -1,16 +1,26 @@
 <template>
     <div v-if="content" :class="[$style.root, !active && $style['root--hidden']]" :data-content="content">
         <slot :class="$style.content" />
-        <slot v-for="element in missingElementsToAdd" aria-hidden="true" :class="$style.content" />
+        <slot v-for="key in missingElementsToAdd" :id="key" aria-hidden="true" :class="$style.content" />
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
+import type { VueConstructor } from 'vue'
 import { gsap } from 'gsap'
+import { throttle } from 'throttle-debounce'
+// import { isPassiveSupported } from '~/utils/passive-supported'
 // import { mapRange } from '~/utils/utils'
 
-export default Vue.extend({
+interface Component extends Vue {
+    scrollY: number
+    scrollDirection: 1 | -1
+    scrollOffset: number
+    scrollCallback: EventListener
+}
+
+export default (Vue as VueConstructor<Component>).extend({
     name: 'VMarquee',
     props: {
         content: String,
@@ -34,6 +44,14 @@ export default Vue.extend({
         },
     },
     mounted() {
+        this.scrollY = window.scrollY
+        this.scrollCallback = throttle(100, (this as any).onScroll)
+
+        this.update()
+
+        window.addEventListener('scroll', this.scrollCallback)
+        // window.addEventListener('scroll', this.scrollCallback, isPassiveSupported() ? { passive: true } : false)
+
         const el = this.$slots?.default?.[0]?.elm
         if (!el) return
 
@@ -46,10 +64,25 @@ export default Vue.extend({
     beforeDestroy() {
         // window.removeEventListener('wheel', this.onWheel)
         this.contentObserver?.disconnect()
+
+        window.removeEventListener('scroll', this.scrollCallback)
     },
     methods: {
-        // https://codepen.io/akapowl/pen/yLMaxPN/56a209d1e67e6e2fd56fe10d0b5fdafe?editors=0010
-        onWheel(_event: WheelEvent) {},
+        update() {
+            const scrollY = window.scrollY
+            const scrollDirection = scrollY > this.scrollY ? 1 : -1
+
+            if (scrollDirection === this.scrollDirection) {
+                this.scrollOffset += scrollY - this.scrollY
+            } else {
+                this.scrollOffset = 0
+            }
+            this.scrollY = scrollY
+            this.scrollDirection = scrollDirection
+        },
+        onScroll() {
+            this.update()
+        },
         initContentObserver() {
             this.contentObserver = new ResizeObserver((entries: ResizeObserverEntry[]) =>
                 this.onContentResized(entries)

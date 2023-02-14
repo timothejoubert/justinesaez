@@ -1,3 +1,5 @@
-$font-sans-serif: helvetica, arial, sans-serif;
-$noi: 'noi', sans-serif;
-$varent: 'varent', serif;
+$lineal-fallback: helvetica, arial, sans-serif;
+$noi: 'noi', $lineal-fallback;
+$varent: 'varent', $lineal-fallback;
+$kostic: 'kostic', $lineal-fallback;
+$dida: 'dida', serif;

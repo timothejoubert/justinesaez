@@ -2,41 +2,51 @@ import Vue from 'vue'
 import toBoolean from '~/utils/to-boolean'
 import GeneralsConst from '~/constants/app'
 
+export type SplashScreenState = 'pending' | 'hidden' | 'starting' | 'ended' | 'done'
+
 export default Vue.extend({
     data() {
         return {
-            enterSplashScreen: false,
-            isSplashScreenDone: false,
-            isSplashScreenHidden: false,
+            splashScreenState: 'pending' as SplashScreenState,
+            isReady: false,
         }
     },
-    computed: {
-        isFirstConnexion(): boolean {
-            return !localStorage.getItem('visited')
-        },
-        displaySplashScreen(): boolean {
-            return (
-                toBoolean(GeneralsConst.DISPLAY_SPLASH_SCREEN) || toBoolean(GeneralsConst.DISPLAY_ALWAYS_SPLASH_SCREEN)
-            )
+    watch: {
+        splashScreenState(currentState: SplashScreenState) {
+            if (currentState === 'ended') this.splashScreenState = 'done'
+            this.isReady = currentState === 'done' || (currentState === 'hidden' && this.hasAlreadyVisited())
         },
     },
     mounted() {
-        this.updateSplashScreenState()
-        window.localStorage.setItem('visited', 'true')
+        this.setSplashScreenState()
+
+        this.initVisited()
     },
     beforeDestroy() {
-        window.localStorage.removeItem('visited')
+        this.unvisited()
     },
     methods: {
-        updateSplashScreenState() {
-            const displayOnFirstConnexion = toBoolean(GeneralsConst.DISPLAY_SPLASH_SCREEN) && this.isFirstConnexion
+        setSplashScreenState() {
+            const hide =
+                !toBoolean(GeneralsConst.DISPLAY_ALWAYS_SPLASH_SCREEN) &&
+                !toBoolean(GeneralsConst.DISPLAY_SPLASH_SCREEN_ONCE)
 
-            if (!this.displaySplashScreen || !displayOnFirstConnexion) {
-                this.isSplashScreenHidden = true
-            }
+            const display =
+                toBoolean(GeneralsConst.DISPLAY_ALWAYS_SPLASH_SCREEN) ||
+                (toBoolean(GeneralsConst.DISPLAY_SPLASH_SCREEN_ONCE) && !this.hasAlreadyVisited())
+
+            if (hide) this.splashScreenState = 'hidden'
+            else if (display) this.splashScreenState = 'starting'
+            else this.splashScreenState = 'done'
         },
-        onSplashScreenDone() {
-            this.isSplashScreenDone = true
+        hasAlreadyVisited(): boolean {
+            return !!localStorage.getItem('visited')
+        },
+        initVisited() {
+            window.localStorage.setItem('visited', 'true')
+        },
+        unvisited() {
+            window.localStorage.removeItem('visited')
         },
     },
 })

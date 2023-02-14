@@ -10,9 +10,9 @@
   @include text-h3;
 }
 
-//.text-h4 {
-//  @include text-h4;
-//}
+.text-h4 {
+  @include text-h4;
+}
 //
 //.text-h5 {
 //  @include text-h5;
@@ -56,8 +56,4 @@
 
 .text-body-xs {
     @include text-body-xs;
-}
-
-.text-body-xxs {
-    @include text-body-xxs;
 }

@@ -1,0 +1,166 @@
+{
+    "headData": {
+        "@type": "NodesSourcesHead",
+        "nodeName": "headData",
+        "siteName": "Justine Saez",
+        "metaTitle": "Meta site title",
+        "mainColor": "#ffffff",
+        "metaDescription": "Meta description",
+        "locale": "fr",
+        "homePageUrl": "/",
+        "shareImg": "/images/share.jpg",
+        "socials": [
+            {
+                "instagram": "https://instagram.com"
+            },
+            {
+                "Email": "justinesaez42@gmail.com"
+            },
+            {
+                "facebook": "https://facebook.com"
+            },
+            {
+                "github": "https://github.com"
+            },
+            {
+                "behance": "https://behance.com"
+            },
+            {
+                "linkedin": "https://linkedin.com"
+            },
+            {
+                "codepen": "https://codepen.com"
+            }
+        ],
+        "loadingMedias": []
+    },
+    "home": {
+        "@type": "Page",
+        "@id": "page-01",
+        "nodeName": "homePage",
+        "title": "Accueil",
+        "slug": "accueil",
+        "relativePath": "/",
+        "description": "Description or Page Meta Description index",
+        "shareImg": "/images/share.jpg",
+        "medias": [
+            "/images/share.jpg",
+            "/images/share.jpg",
+            "/images/share.jpg",
+            "/images/share.jpg",
+            "/images/share.jpg",
+            "/images/share.jpg"
+        ]
+    },
+    "sketchbooks": {
+        "@type": "Page",
+        "@id": "page-03",
+        "nodeName": "sketchbooks",
+        "title": "Carnets",
+        "slug": "carnets",
+        "relativePath": "/carnets",
+        "description": "Description or Page Meta Description",
+        "shareImg": "",
+        "content": [
+            {
+                "@type": "sketchbook",
+                "title": "Carnet 1",
+                "slug": "carnet-1",
+                "relativePath": "/carnets",
+                "gallery": []
+            },
+            {
+                "@type": "sketchbook",
+                "title": "Carnet 1",
+                "slug": "carnet-1",
+                "relativePath": "/carnets",
+                "gallery": []
+            }
+        ]
+    },
+    "projects": {
+        "@type": "PageListing",
+        "@id": "page-02",
+        "nodeName": "projectListing",
+        "title": "Projets",
+        "slug": "projets",
+        "relativePath": "/projets",
+        "description": "Description or Page Meta Description",
+        "shareImg": "",
+        "children": [
+            {
+                "@type": "Page",
+                "@id": "projet-01",
+                "nodeName": "project",
+                "title": "projet 1",
+                "slug": "project-1",
+                "relativePath": "/projets/project-1",
+                "tags": [
+                    "Tag 1",
+                    "Tag 2"
+                ],
+                "scope": "School",
+                "date": "01-03-2022",
+                "description": "project description",
+                "thumbnail": "image.jpg",
+                "gallery": [
+                    {},
+                    {}
+                ]
+            },
+            {
+                "@type": "Page",
+                "@id": "projet-02",
+                "nodeName": "project",
+                "title": "projet 2",
+                "slug": "project-2",
+                "relativePath": "/projets/project-2",
+                "tags": [
+                    "Tag 1",
+                    "Tag 3",
+                    "Tag 4"
+                ],
+                "scope": "BTS",
+                "date": "01-03-2022",
+                "description": "project description",
+                "thumbnail": "image.jpg",
+                "gallery": [
+                    {},
+                    {}
+                ]
+            },
+            {
+                "@type": "Page",
+                "@id": "projet-03",
+                "nodeName": "project",
+                "title": "projet 3",
+                "slug": "project-3",
+                "relativePath": "/projets/project-3",
+                "tags": [
+                    "Nouveau tag",
+                    "Tag 3",
+                    "Tag 4"
+                ],
+                "scope": "BTS",
+                "date": "01-03-2022",
+                "description": "project description",
+                "thumbnail": "image.jpg",
+                "gallery": [
+                    {},
+                    {}
+                ]
+            }
+        ]
+    },
+    "about": {
+        "@type": "Page",
+        "@id": "page-04",
+        "nodeName": "about",
+        "title": "À propos",
+        "slug": "a-propos",
+        "relativePath": "/a-propos",
+        "subTitle": "Hello, je m’appelle Justine Saez,",
+        "description": "je suis une illustratrice Lyonnaise mordue des courbes féminines et des couleurs, je dessine des corps et des sentiments. Je m’amuse aussi à gribouiller des instants cocasses du quotidien.",
+        "shareImg": ""
+    }
+}

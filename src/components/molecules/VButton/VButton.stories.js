@@ -8,14 +8,16 @@ export default {
     component: VButton,
     argTypes: {
         theme: {
-            options: ['dark', 'light'],
-            type: 'select',
+            options: ['dark', 'light', 'orange'],
+            control: 'radio',
         },
         color: {
             options: ['primary', 'secondary'],
+            control: 'radio',
         },
         size: {
-            options: ['s', 'm'],
+            options: ['s', 'm', 'l'],
+            control: 'radio',
         },
     },
     args: {

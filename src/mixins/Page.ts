@@ -3,19 +3,18 @@ import Vue from 'vue'
 import { FacebookMetaOptions, PageMetaPropertyName, TwitterMetaOptions } from '~/types/meta'
 import { createFacebookMeta } from '~/utils/meta/facebook'
 import { createTwitterMeta } from '~/utils/meta/twitter'
+import { PageData } from '~/types/app'
+import { getPageByPath } from '~/utils/parse-api-data'
+import pageDataFallBack from '~/mock-data/page-data-fallback.json'
+import { isAbout, isHomePage, isProject, isProjectListing, isSketchBooks } from '~/utils/entity'
 
 export default Vue.extend({
-    data() {
-        return {
-            pageData: {} as PageData,
-        }
-    },
     head(): MetaInfo {
         const meta = [
             {
                 hid: 'description',
                 name: 'description',
-                content: this.pageData?.metaDescription || 'fallback de description dans mixin page',
+                content: this.pageData?.description || 'fallback de description dans mixin page',
             } as PageMetaPropertyName,
             ...createFacebookMeta(this.getFacebookMetaOptions()),
             ...createTwitterMeta(this.getTwitterMetaOptions()),
@@ -32,24 +31,34 @@ export default Vue.extend({
         }
     },
     computed: {
-        isHomePage(): boolean {
-            return this.$route.fullPath === '/' || this.$route.name === 'index'
-        },
-        isProject(): boolean {
-            return this.pageData['@type'] === 'project'
-        },
-        isAbout(): boolean {
-            return this.pageData['@type'] === 'about'
+        pageData(): PageData {
+            return getPageByPath(this.$route.path) || (pageDataFallBack as PageData)
         },
         metaTitle(): string {
-            return this.pageData?.title
-                ? this.$config.appTitle + ' | ' + this.pageData.title
-                : (this.pageData?.title ? this.pageData.title + ' | ' : '') + this.$config.appTitle
+            const appName = this.$store.state.headData.siteName
+            return this.isHome ? this.pageData.title : appName + ' | ' + this.pageData.title
+        },
+        isHome(): boolean {
+            return isHomePage(this.pageData)
+        },
+        isProjectListing(): boolean {
+            return isProjectListing(this.pageData)
+        },
+        isSketchBook(): boolean {
+            return isSketchBooks(this.pageData)
+        },
+        isAbout(): boolean {
+            return isAbout(this.pageData)
+        },
+        isProject(): boolean {
+            return isProject(this.pageData)
         },
     },
     methods: {
-        getMetaImage(): string | undefined {
-            return this.pageData?.shareImg || '/images/share.jpg'
+        getMetaImage(): string {
+            const imageProviderPath =
+                !!this.pageData?.shareImg && typeof this.pageData.shareImg !== 'string' && this.pageData.shareImg?.path
+            return imageProviderPath || (this.pageData?.shareImg as string) || '/images/share.jpg'
         },
         getPageUrl(): string {
             return this.$config.baseURL + this.$route.fullPath.substring(1)
@@ -57,7 +66,7 @@ export default Vue.extend({
         getTwitterMetaOptions(): TwitterMetaOptions {
             return {
                 title: this.metaTitle,
-                description: this.pageData?.metaDescription || '',
+                description: this.pageData.description || '',
                 url: this.getPageUrl(),
                 image: this.getMetaImage(),
             }
@@ -65,7 +74,7 @@ export default Vue.extend({
         getFacebookMetaOptions(): FacebookMetaOptions {
             return {
                 title: this.metaTitle,
-                description: this.pageData?.metaDescription || '',
+                description: this.pageData.description || '',
                 url: this.getPageUrl(),
                 siteName: this.$config.appTitle,
                 image: this.getMetaImage(),

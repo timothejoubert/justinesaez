@@ -11,6 +11,9 @@ $v-button: (
     m: (
         font-size: rem(14)
     ),
+    l: (
+        font-size: rem(26)
+    ),
 );
 
 $v-button-rounded: (
@@ -18,7 +21,10 @@ $v-button-rounded: (
         border-radius: math.div(32px, 2),
     ),
     m: (
-        border-radius: math.div(52px, 2),
+        border-radius: math.div(46px, 2),
+    ),
+    l: (
+        border-radius: math.div(48px, 2),
     ),
 );
 
@@ -33,6 +39,11 @@ $v-button-inner: (
         min-width: 54px,
         height: 46px,
         padding: 0 26px,
+    ),
+    l: (
+        min-width: 68px,
+        height: 50px,
+        padding: 0 31px,
     ),
 );
 
