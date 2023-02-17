@@ -29,7 +29,8 @@
             "@types/node",
             "nuxt-i18n",
             "@nuxt/image",
-            "@nuxt/content"
+            "@nuxt/content",
+            "webpack-env"
         ]
     },
     "exclude": [

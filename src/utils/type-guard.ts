@@ -12,5 +12,5 @@ export default function isValidProject(object: Partial<Project>): object is Proj
 }
 
 export const isExistingPage = (name: unknown): name is Pages => {
-    return rootKeyName.includes(name)
+    return rootKeyName.includes(name as any)
 }

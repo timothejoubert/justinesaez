@@ -11,7 +11,7 @@
                         :class="$style.item"
                         @mouseenter="onLinkMouseEnter(link.relativePath)"
                     >
-                        <nuxt-link :to="link.relativePath">{{ link.title }}</nuxt-link>
+                        <nuxt-link :to="link.relativePath" :class="$style.item__link">{{ link.title }}</nuxt-link>
                     </li>
                 </ul>
             </div>
@@ -173,14 +173,17 @@ $height: rem(34);
 .item {
     position: relative;
     z-index: 2;
+    color: var(--theme-on-default);
+    white-space: nowrap;
+}
+
+.item__link {
     display: flex;
     min-width: rem(68);
     min-height: $height;
     align-items: center;
     justify-content: center;
-    color: var(--theme-on-default);
     padding-inline: rem(22);
-    white-space: nowrap;
 }
 
 .slider {
@@ -196,6 +199,7 @@ $height: rem(34);
 
 .button {
     text-transform: uppercase;
+    user-select: none;
 }
 
 .burger {

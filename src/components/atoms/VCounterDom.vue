@@ -46,7 +46,7 @@ export default Vue.extend({
                     ...slot.context?.$props,
                     props: slot.data?.props,
                     class: [slot.data?.class, 'item-project'],
-                    style: { '--index': slotIndex },
+                    style: { '--index': slotIndex } as Record<string, any>,
                     attrs: linkAttributes,
                     directives: [
                         {

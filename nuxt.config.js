@@ -1,17 +1,23 @@
+import { resolve } from 'path'
 import SpriteLoaderPlugin from 'svg-sprite-loader/plugin'
-import * as SITE_INFO from './content/site/info.json'
+import api from './src/static/mock-data/api.json'
 import { version } from './package.json'
+import createSitemap from './src/utils/create-sitemap'
 
 const locale = process.env.DEFAULT_LOCALE || 'fr'
-const siteName = SITE_INFO.siteName || 'Timothé Joubert'
+const siteName = api.headData.siteName
 
 export default {
     // Target: https://go.nuxtjs.dev/config-target
-    target: 'static',
+    // target: 'static',
 
     // define if this file isn't same folder as nuxt front folder
     // https://nuxtjs.org/docs/2.x/configuration-glossary/configuration-srcdir
     srcDir: 'src',
+
+    alias: {
+        images: resolve('', './assets/images'),
+    },
 
     // Global page headers: https://go.nuxtjs.dev/config-head
     head: {
@@ -25,7 +31,7 @@ export default {
             {
                 hid: 'description',
                 name: 'description',
-                content: SITE_INFO.siteDescription || '',
+                content: api.metaDescription || 'fallBack meta description',
             },
             { name: 'format-detection', content: 'telephone=no' },
             { name: 'google-site-verification', content: 'o5sD6l8eVydQy3O8y0D3ETIcgafZZZwbNwKjh_1qimc' },
@@ -83,17 +89,33 @@ export default {
     ],
 
     // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-    plugins: [
-        '~/plugins/gsap.client.ts',
-    ],
+    plugins: ['~/plugins/gsap.client.ts'],
     // Modules: https://go.nuxtjs.dev/config-modules
     modules: [
         '@nuxt/content',
-        // '@nuxtjs/sitemap',
+        // https://sitemap.nuxtjs.org/guide/setup
+        '@nuxtjs/sitemap',
+        //
         '@nuxt/image',
         // https://cloudinary.nuxtjs.org/setup
         // '@nuxtjs/cloudinary',
     ],
+
+    // https://nuxtjs.org/docs/configuration-glossary/configuration-servermiddleware/
+    // serverMiddleware: ['./src/serverMiddleware/redirect-on-unknown-path'],
+
+    // https://sitemap.nuxtjs.org/guide/setup
+    sitemap: {
+        // hostname: process.env.BASE_URL,
+        // i18n: true,
+        path: '/sitemap.xml',
+        cacheTime: 1000 * 60 * 60 * 20,
+        defaults: {
+            changefreq: 'daily',
+            lastmod: new Date(),
+        },
+        sitemaps: createSitemap(),
+    },
 
     // image provider - don't work with storybook ?
     // cloudinary: {
@@ -105,8 +127,8 @@ export default {
 
     // https://fr.nuxtjs.org/docs/2.x/configuration-glossary/configuration-runtime-config/
     publicRuntimeConfig: {
+        siteUrl: process.env.APP_URL,
         baseUrl: process.env.STRAPI_API_URL || process.env.LOCAL_API_URL,
-        appTitle: process.env.APP_TITLE,
     },
 
     // https://github.com/nuxt-community/svg-module

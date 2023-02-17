@@ -5,9 +5,7 @@ Portfolio de Justine Saez - Designer illustratrice
 - Remove .nuxt-storybook folder in git 
 - Clean VSplitWord or remove it and use Gsap splitWord
 - VNav => check responsive
-- Create a json-api with json-server and fetch data from it (https://www.youtube.com/watch?v=CTC8LUOhKHo)
-- Project Carousel: use swiper with loop & mouseWheel options (see: 
-https://codesandbox.io/p/sandbox/swiper-infinite-loop-forked-07n3j6?file=%2Findex.html)
+- Create sitemap generator
 
 ## Build Setup
 

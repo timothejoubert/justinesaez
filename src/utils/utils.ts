@@ -24,7 +24,7 @@ export const lerp = (a: number, b: number, n: number): number => {
     return (1 - n) * a + n * b
 }
 
-export const getRandomFloat = (min: number, max: number, decimals: number) => {
+export const getRandomFromRange = (min: number, max: number, decimals: number = 0) => {
     const str = (Math.random() * (max - min) + min).toFixed(decimals)
 
     return parseFloat(str)
@@ -39,8 +39,8 @@ export const getRandomInt = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-export const getCssProp = (propName: string) => {
-    return getComputedStyle(document.documentElement).getPropertyValue(propName)
+export const getCssProp = (item: HTMLElement = document.documentElement, propName: string) => {
+    return getComputedStyle(item).getPropertyValue(propName)
 }
 
 export const setCssProp = (propName: string, value: string) => {

@@ -1,6 +1,6 @@
-import api from '~/mock-data/api.json'
+import api from '../static/mock-data/api.json'
+import { isListingPage, isNodeMenu } from '../utils/entity'
 import { HeadData, PageData, Project, apiResponse, ListingPage, ProjectListing } from '~/types/app'
-import { isListingPage, isNodeMenu } from '~/utils/entity'
 
 export const getApiResponse = (): apiResponse => {
     return api as unknown as apiResponse
@@ -64,4 +64,12 @@ export const getMenu = (level: 0 | 1 = 0): (PageData | PageData[])[] => {
 
 export const getAllPage = (): PageData[] => {
     return getMenu(1).flat(2)
+}
+
+export const getAllPagePath = (): string[] => {
+    return getAllPage().map((page) => page.relativePath)
+}
+
+export const getAppTitle = (): string => {
+    return getHeadData().siteName
 }

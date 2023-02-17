@@ -1,6 +1,6 @@
 <template>
     <div :class="rootClass">
-        <h1>{{ pageData.title }}</h1>
+        <v-random-grid-images />
     </div>
 </template>
 

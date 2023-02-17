@@ -67,7 +67,7 @@ export interface AboutPage extends PageData {
 
 export interface ProviderImage {
     title: string
-    path: string
+    src: string
 }
 
 export type Image = string | ProviderImage

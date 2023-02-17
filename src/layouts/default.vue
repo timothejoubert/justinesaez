@@ -60,8 +60,8 @@ export default mixins(Resize, SplashScreen).extend({
 
 .splash-screen:global(#{'-enter-active'}),
 .splash-screen:global(#{'-leave-active'}) {
-    transition-duration: 2s;
     transition-delay: 1s;
+    transition-duration: 2s;
     transition-property: opacity;
 }
 

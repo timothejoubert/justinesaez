@@ -94,7 +94,10 @@ export default Vue.extend({
                             this.breakWord && this.$style['letter--break'],
                             'split-letter',
                         ],
-                        style: { '--index-letter-in-word': index, '--index-letter-total': indexLetter },
+                        style: { '--index-letter-in-word': index, '--index-letter-total': indexLetter } as Record<
+                            string,
+                            any
+                        >,
                     },
                     letter
                 )
@@ -109,7 +112,7 @@ export default Vue.extend({
                     'div',
                     {
                         class: [this.$style.word],
-                        style: { '--index-word': wordIndex },
+                        style: { '--index-word': wordIndex } as Record<string, any>,
                     },
                     displayLetter ? parsedLetters(word) : word
                 )
@@ -128,7 +131,7 @@ export default Vue.extend({
                     'div',
                     {
                         class: [this.$style.line],
-                        style: { '--index-line': lineIndex },
+                        style: { '--index-line': lineIndex } as Record<string, any>,
                     },
                     displayWord ? parsedWords(line) : displayLetter ? parsedLetters(line) : line
                 )
